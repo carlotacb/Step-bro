@@ -38,10 +38,25 @@ const UserController = () => {
   const updateUser = async (req, res) => {
     try {
       const email = req.params.email;
-      const username = req.body.username;
-      const userPwd = req.body.password;
-      const bio = req.body.bio;
-      const icon = req.body.icon;
+      let originalUser;
+      try {
+        const userResponse = await db.query('SELECT * FROM users WHERE user_mail=$1', [email]);
+        if (userResponse.rows.length === 0) {
+            return res.status(404).send('User not found');
+        }
+        else {
+            originalUser = userResponse;
+        }
+      }
+      catch (err) {
+          console.error(err);
+          return res.status(500).json({success:false, message:'Internal Server Error'});
+      }
+
+      const username = req.body.username ?? originalUser.rows[0].username;
+      const userPwd = req.body.password ?? originalUser.rows[0].passwd;
+      const bio = req.body.bio ?? originalUser.rows[0].bio;
+      const icon = req.body.icon ?? originalUser.rows[0].icon;
       const result = await db.query('UPDATE users SET username = $1,	passwd = $2, bio = $3, icon = $4 WHERE user_mail = $5;', [username, userPwd, bio, icon, email]);
       
         return res.status(200).json({ success: true});
