@@ -13,7 +13,7 @@ const UserController = () => {
     try {
       const result = await db.query('SELECT * FROM users WHERE users.user_mail=$1', [user_mail]);
       if(result.rows.length > 0){
-        return res.status(409).json({success:false, message:'User already exists'});
+        return res.status(409).json({success:false, message:'Email already exists'});
       }
     } catch (err) {
       console.error(err);
