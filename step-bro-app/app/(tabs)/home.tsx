@@ -16,14 +16,38 @@ import {
 
 } from 'react-native';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from 'react-native-chart-kit';
+
 import { Pedometer } from 'expo-sensors';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import CircularProgress from 'react-native-circular-progress-indicator';
 
 export default function HomeScreen() {
   const [PedometerAvailability, SetPedometerAvailability] = useState('');
-
+  const maxSteps = 80;
   const [stepCount, setStepCount] = useState(0);
+
+  const data = {
+    data: [0.4],
+  };
+  const chartConfig = {
+    backgroundGradientFrom: '#1E2923',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#08130D',
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
+  const screenWidth = Dimensions.get('window').width;
 
   useEffect(() => {
     calculator();
@@ -48,27 +72,16 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home</Text>
-      <Text style={styles.headingDesign}>
-
-        Is Pedometer available on the device :
-        {' '}
-        {PedometerAvailability}
-
-      </Text>
-
-      <View>
-        <CircularProgress
-          value={stepCount}
-          maxValue={8000}
-          radius={200}
-          textColor="#17E67E"
-          activeStrokeColor="#AAE617"
-          inActiveStrokeColor="#17E1E6"
-          inActiveStrokeOpacity={1.5}
-          inActiveStrokeWidth={30}
-          activeStrokeWidth={30}
-        />
-      </View>
+      <View />
+      <ProgressChart
+        data={[stepCount / maxSteps]}
+        width={screenWidth}
+        height={300}
+        strokeWidth={30}
+        radius={120}
+        chartConfig={chartConfig}
+        hideLegend
+      />
     </View>
   );
 }
