@@ -40,7 +40,7 @@ router.delete('/userleague', userLeagueController.leaveLeague);
 
 // stats routes
 router.get('/stats/day', statusController.getStatsDay);
-router.get('/stats/week', statusController.getStatsDay);
+router.get('/stats/week', statusController.getStatsWeek);
 router.post('/stats', statusController.updateStatsDay);
 
 
