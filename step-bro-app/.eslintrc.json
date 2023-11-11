@@ -51,6 +51,8 @@
     "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "import/prefer-default-export": "off",
     "react/require-default-props": "off",
+    "react/no-unstable-nested-components": "off",
+    "react/react-in-jsx-scope": "off",
     "no-param-reassign": [2, {"props": false}],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.test.tsx", "**/*mock-utils.ts"]}]
   }
