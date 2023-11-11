@@ -35,7 +35,7 @@ router.put('/leagues/:creator_mail&:league_name', leagueController.updateLeague)
 router.delete('/leagues/:creator_mail&:league_name', leagueController.deleteLeague);
 
 // UserLeagues routes
-router.post('/userleague', userLeagueController.joinLeague);
+router.post('/userleague', userLeagueController.inviteLeague);
 router.delete('/userleague', userLeagueController.leaveLeague);
 
 // stats routes

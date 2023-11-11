@@ -33,7 +33,6 @@ const UserController = () => {
 
 
     // create user
-    console.log(req.body);
     try {
       const result = await db.query('INSERT INTO users(user_mail, phone_number, username, passwd, bio, icon) VALUES($1, $2, $3, $4, $5, $6);', [user_mail, phone, username, userPwd, bio, icon]);
       const user = await db.query('SELECT * FROM users WHERE users.user_mail=$1', [user_mail]);
