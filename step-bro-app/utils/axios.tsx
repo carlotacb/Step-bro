@@ -1,11 +1,13 @@
 import axios from 'axios';
 import bcrypt from 'react-native-bcrypt';
-import { LoginBody, LoginResponse, RegisterBody } from './responsesTypes';
+import {
+  LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse,
+} from './responsesTypes';
 
 const baseURL = 'http://185.26.49.230:8080/api';
 const salt = bcrypt.genSaltSync(10);
 
-export async function login(email: string, password: string): Promise<LoginResponse> {
+export async function login(email: string, password: string): Promise<LoginOrRegisterResponse> {
   const hash = bcrypt.hashSync(password, salt);
   const data: LoginBody = {
     user_mail: email,
@@ -31,7 +33,7 @@ export async function register(
   password: string,
   bio: string,
 ):
-  Promise<LoginResponse> {
+  Promise<LoginOrRegisterResponse> {
   const hash = bcrypt.hashSync(password, salt);
   const data: RegisterBody = {
     username,
@@ -50,6 +52,24 @@ export async function register(
 
     return { token: response.data, error: false };
   } catch (error) {
+    return { error: true };
+  }
+}
+
+export async function getUserInformation(token: string): Promise<MyInformationResponse> {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseURL}/profile`,
+      headers: {
+        token,
+      },
+    });
+
+    console.log(response.data.user);
+    return { information: { ...response.data.user }, error: false };
+  } catch (error) {
+    console.log(error);
     return { error: true };
   }
 }

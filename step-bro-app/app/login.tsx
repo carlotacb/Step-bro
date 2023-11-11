@@ -24,9 +24,11 @@ export default function LoginScreen() {
         setErrorText('');
         setLoadingLogin(false);
         if (Platform.OS === 'web') {
+          console.log(response.token);
           localStorage.setItem('userToken', response.token || '');
         } else {
-          SecureStore.setItemAsync('userToken', response.token || '');
+          console.log(response.token);
+          SecureStore.setItem('userToken', response.token || '');
         }
         return router.replace('/home');
       }
@@ -43,19 +45,19 @@ export default function LoginScreen() {
           underlineColor="transparent"
           mode="outlined"
           label="Email"
-          returnKeyType="next"
+          enterKeyHint="next"
           value={username}
           onChangeText={(text) => setUsername(text)}
           autoCapitalize="none"
           textContentType="emailAddress"
-          keyboardType="email-address"
+          inputMode="email"
         />
         <Input
           selectionColor="#79AF6C"
           underlineColor="transparent"
           mode="outlined"
           label="Password"
-          returnKeyType="next"
+          enterKeyHint="next"
           value={password}
           onChangeText={(text) => setPassword(text)}
           autoCapitalize="none"
