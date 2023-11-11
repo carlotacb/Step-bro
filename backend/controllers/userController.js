@@ -70,7 +70,7 @@ const UserController = () => {
     try {
       const email = req.params.email;
       const result = await db.query('DELETE FROM users WHERE user_mail = $1;', [email]);
-      return res.status(200).json({ success: true});
+      return res.status(204).json({ success: true});
     } catch (err) {
       console.error(err);
       return res.status(500).json({success:false, message:'Internal Server Error'});
