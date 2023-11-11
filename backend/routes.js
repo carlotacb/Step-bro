@@ -17,6 +17,8 @@ const statusController = StatusController();
 router.post('/login', authController.login);
 router.post('/register', authController.register);
 
+router.get('/profile', userController.getUserByToken);
+
 router.get('/users/:email', userController.getUserByEmail);
 router.put('/users/:email', userController.updateUser);
 router.delete('/users/:email', userController.deleteUser);
