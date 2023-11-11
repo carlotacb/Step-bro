@@ -135,7 +135,7 @@ const UserController = () => {
   const getMyLeagues = async (req, res) => {
     try {
       const email = req.get('token');
-      const result = await db.query('SELECT * FROM user_leagues WHERE user_mail = $1;', [email]);
+      const result = await db.query('SELECT * FROM usersleagues WHERE user_mail = $1;', [email]);
       return res.status(200).json({ success: true, leagues: result.rows});
     } catch (err) {
       console.error(err);
