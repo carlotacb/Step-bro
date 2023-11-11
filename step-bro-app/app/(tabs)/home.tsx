@@ -58,7 +58,7 @@ export default function HomeScreen() {
   const screenWidth = Dimensions.get('window').width;
 
   const token = getToken();
-  // string username = '';
+  let username = '';
   console.log(token);
   if (token === '') {
     // router.replace('/login');
@@ -106,7 +106,8 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>
         Welcome
-        {getUserInformation()}
+        {' '}
+        {username}
       </Text>
       <View />
       <ProgressChart
@@ -144,6 +145,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
+    color: '#fff',
     fontWeight: 'bold',
   },
   separator: {

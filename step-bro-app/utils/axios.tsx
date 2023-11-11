@@ -89,7 +89,12 @@ export async function getUserStats(token: string): Promise<MyStats> {
 
     console.log(response.data.user);
     return { stats: { ...response.data.message }, error: false };
-
+  } catch (error) {
+    console.log(error);
+    return { error: true };
+  }
+}
+// eslint-disable-next-line max-len
 export async function updateUserInformation(token: string, bio: string, username: string): Promise<MyInformationResponse> {
   try {
     const response = await axios({
