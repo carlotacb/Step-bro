@@ -24,6 +24,7 @@ router.get('/leagues', leagueController.getAll);
 router.post('/leagues', leagueController.createLeague);
 router.get('/leagues/:creator_mail&:league_name', leagueController.getLeagueById);
 router.put('/leagues/:creator_mail&:league_name', leagueController.updateLeague);
+router.delete('/leagues/:creator_mail&:league_name', leagueController.deleteLeague);
 
 
 module.exports = router;
