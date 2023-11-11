@@ -22,7 +22,7 @@ module.exports = {
 
 
 const port = process.env.PORT;
-
+app.use(express.json())
 
 const routes = require('./routes');
 

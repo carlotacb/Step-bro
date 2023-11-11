@@ -18,20 +18,18 @@ router.post('/login', async (req, res) => {
   const username = req.body.user;
   const userPwd = req.body.pwd;
   try {
-    const result = await db.query('SELECT * FROM users WHERE username=$1 AND password=$2', [username, userPwd]);
+    const result = await pool.query('SELECT * FROM users WHERE username=$1 AND password=$2', [username, userPwd]);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
-
-    res.send(`Details of user ${userId}`);
   }
 });
 
 router.get('/users/:id', async (req, res) => {
   const userId = req.params.id;
   try {
-    const result = await db.query('SELECT * FROM users');
+    const result = await pool.query('SELECT * FROM users');
     return result.rows;
   } catch (err) {
     console.error(err);
@@ -42,18 +40,15 @@ router.get('/users/:id', async (req, res) => {
 
 });
 
-router.post('/users', (req, res) => {
-  res.send('Create a new user');
+router.get('/users', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM users');
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-router.put('/users/:id', (req, res) => {
-  const userId = req.params.id;
-  res.send(`Update user ${userId}`);
-});
-
-router.delete('/users/:id', (req, res) => {
-  const userId = req.params.id;
-  res.send(`Delete user ${userId}`);
-});
 
 module.exports = router;
