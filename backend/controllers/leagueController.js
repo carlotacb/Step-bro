@@ -19,12 +19,12 @@ const LeagueController = () => {
     */
 
     const createLeague = async (req, res) => {
+        const creator_mail = req.get('token');
         const league_name = req.body.league_name;
         const start_date = req.body.start_date;
         const end_date = req.body.end_date;
         const description = req.body.description;
         const icon = req.body.icon;
-        const creator_mail = req.body.creator_mail;
         try {
             const result = await db.query('INSERT INTO leagues (league_name, start_date, end_date, description, icon, creator_mail) VALUES ($1, $2, $3, $4, $5, $6)', [league_name, start_date, end_date, description, icon, creator_mail]);
             return res.status(201).send(result.rows[0]);
@@ -35,7 +35,7 @@ const LeagueController = () => {
     }
 
     const getLeagueById = async (req, res) => {
-        const creator_mail = req.params.creator_mail;
+        const creator_mail = req.get('token');
         const league_name = req.params.league_name;
         try {
             const result = await db.query('SELECT * FROM leagues WHERE creator_mail=$1 AND league_name=$2', [creator_mail, league_name]);
@@ -62,7 +62,7 @@ const LeagueController = () => {
 
     const updateLeague = async (req, res) => {
         const league_name = req.params.league_name;
-        const creator_mail = req.params.creator_mail;
+        const creator_mail = req.get('token');
         let originalLeague;
         try {
             const leagueResponse = await db.query('SELECT * FROM leagues WHERE creator_mail=$1 AND league_name=$2', [creator_mail, league_name]);
@@ -92,7 +92,7 @@ const LeagueController = () => {
 
     const deleteLeague = async (req, res) => {
         const league_name = req.params.league_name;
-        const creator_mail = req.params.creator_mail;
+        const creator_mail = req.get('token');
         try {
             await db.query('DELETE FROM leagues WHERE creator_mail=$1 AND league_name=$2', [creator_mail, league_name]);
             return res.status(204).send('League deleted');

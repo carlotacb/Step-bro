@@ -4,7 +4,7 @@ const UserLeagueController = () => {
 
 
     const joinLeague = async (req, res) => {
-        const userMail = req.body.user_mail;
+        const userMail = req.get('token');
         const leagueId = req.body.league_id;
         
         // check if user and league exist
@@ -34,7 +34,7 @@ const UserLeagueController = () => {
         }
     };
     const leaveLeague = async (req, res) => {
-        const userMail = req.body.user_mail;
+        const userMail = req.get('token');
         const leagueId = req.body.league_id;
 
         // check if user and league exist and is in league

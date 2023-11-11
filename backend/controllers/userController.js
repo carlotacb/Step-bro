@@ -38,7 +38,7 @@ const UserController = () => {
 
   const updateUser = async (req, res) => {
     try {
-      const email = req.params.email;
+      const email = req.get('token');
       let originalUser;
       try {
         const userResponse = await db.query('SELECT * FROM users WHERE user_mail=$1', [email]);
@@ -69,7 +69,7 @@ const UserController = () => {
 
   const deleteUser = async (req, res) => {
     try {
-      const email = req.params.email;
+      const email = req.get('token');
       const result = await db.query('DELETE FROM users WHERE user_mail = $1;', [email]);
       return res.status(204).json({ success: true});
     } catch (err) {

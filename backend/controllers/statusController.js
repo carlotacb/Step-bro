@@ -2,7 +2,7 @@ const db = require("../db");
 
 const StatusController = () => {
     const getStatsDay = async (req, res) => {
-        const userMail = req.body.user_mail;
+        const userMail = req.get('token');
 
         // get day month and year
         const date = new Date();
@@ -21,7 +21,7 @@ const StatusController = () => {
     }
 
     const updateStatsDay = async (req, res) => {
-        const userMail = req.body.user_mail;
+        const userMail = req.get('token');
         const steps = req.body.steps;
 
         // get day month and year
