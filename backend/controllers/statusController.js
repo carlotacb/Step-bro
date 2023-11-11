@@ -42,7 +42,7 @@ const StatusController = () => {
 
         // check if steps on this day already exists
         try {
-            const result = await db.query('SELECT dates FROM stats WHERE user_mail=$1 AND EXTRACT(YEAR FROM stats_day)=$2 AND EXTRACT(MONTH FROM stats_day)=$3 AND EXTRACT(DAY FROM stats_day)=$4', [userMail, year, month, day]);
+            const result = await db.query('SELECT stats_day FROM stats WHERE user_mail=$1 AND EXTRACT(YEAR FROM stats_day)=$2 AND EXTRACT(MONTH FROM stats_day)=$3 AND EXTRACT(DAY FROM stats_day)=$4', [userMail, year, month, day]);
             if (result.rows.length === 0) {
                 // create new entry
                 try {
