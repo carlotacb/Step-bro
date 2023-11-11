@@ -1,54 +1,43 @@
 const express = require('express');
 const router = express.Router();
 
-const { Pool } = require('pg');
+const {UserController} = require('./controllers/userController');
+const {AuthController} = require('./controllers/authController');
+const {LeagueController} = require('./controllers/leagueController');
+const {UserLeagueController} = require('./controllers/userLeaguesController');
+const {StatusController} = require('./controllers/statusController');
 
+const userController = UserController();
+const authController = AuthController();
+const leagueController = LeagueController();
+const userLeagueController = UserLeagueController();
+const statusController = StatusController();
 
+// Auth routes
+router.post('/login', authController.login);
+router.post('/register', authController.register);
 
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL
-});
+router.get('/users/:email', userController.getUserByEmail);
+router.put('/users/:email', userController.updateUser);
+router.delete('/users/:email', userController.deleteUser);
 
-module.exports = {
-  query: (text, params) => pool.query(text, params)
-};
+router.get('/users', userController.getAllUsers);
+router.post('/users', userController.createUser);
 
-// Define routes
-router.post('/login', async (req, res) => {
-  const username = req.body.user;
-  const userPwd = req.body.pwd;
-  try {
-    const result = await pool.query('SELECT * FROM users WHERE username=$1 AND password=$2', [username, userPwd]);
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-  }
-});
+// Leagues routes
+router.get('/leagues', leagueController.getAll);
+router.post('/leagues', leagueController.createLeague);
+router.get('/leagues/:creator_mail&:league_name', leagueController.getLeagueById);
+router.put('/leagues/:creator_mail&:league_name', leagueController.updateLeague);
+router.delete('/leagues/:creator_mail&:league_name', leagueController.deleteLeague);
 
-router.get('/users/:id', async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const result = await pool.query('SELECT * FROM users');
-    return result.rows;
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
+// UserLeagues routes
+router.post('/userleague', userLeagueController.joinLeague);
+router.delete('/userleague', userLeagueController.leaveLeague);
 
-    res.send(`Details of user ${userId}`);
-  }
-
-});
-
-router.get('/users', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM users');
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-  }
-});
+// stats routes
+router.get('/stats', statusController.getStatsDay);
+router.post('/stats', statusController.updateStatsDay);
 
 
 module.exports = router;
