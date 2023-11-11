@@ -4,11 +4,12 @@ import {
   LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse,
 } from './responsesTypes';
 
+const md5 = require('md5');
+
 const baseURL = 'http://185.26.49.230:8080/api';
-const salt = bcrypt.genSaltSync(10);
 
 export async function login(email: string, password: string): Promise<LoginOrRegisterResponse> {
-  const hash = bcrypt.hashSync(password, salt);
+  const hash = md5(password);
   const data: LoginBody = {
     user_mail: email,
     password: hash,
@@ -34,7 +35,7 @@ export async function register(
   bio: string,
 ):
   Promise<LoginOrRegisterResponse> {
-  const hash = bcrypt.hashSync(password, salt);
+  const hash = md5(password);
   const data: RegisterBody = {
     username,
     user_mail: email,
