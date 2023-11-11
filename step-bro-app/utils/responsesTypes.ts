@@ -21,3 +21,8 @@ export interface RegisterResponse {
   readonly token?: string;
   readonly error: boolean;
 }
+
+export interface WeekRecord {
+  readonly token?: string;
+  readonly steps: string | null;
+}

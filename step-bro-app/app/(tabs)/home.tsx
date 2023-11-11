@@ -34,17 +34,23 @@ export default function HomeScreen() {
   const maxSteps = 80;
   const [stepCount, setStepCount] = useState(0);
 
+  const name = '$';
   const data = {
-    data: [0.4],
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    datasets: [
+      {
+        data: [200, 450, 280, 800, 990, 430, 800],
+      },
+    ],
   };
   const chartConfig = {
     backgroundGradientFrom: '#1E2923',
     backgroundGradientFromOpacity: 0,
     backgroundGradientTo: '#08130D',
-    backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    backgroundGradientToOpacity: 0,
+    color: (opacity = 1) => `rgba(255, 0, 58, ${opacity})`,
     strokeWidth: 2, // optional, default 3
-    barPercentage: 0.5,
+    barPercentage: 0.8,
     useShadowColorFromDataset: false, // optional
   };
   const screenWidth = Dimensions.get('window').width;
@@ -82,6 +88,15 @@ export default function HomeScreen() {
         chartConfig={chartConfig}
         hideLegend
       />
+      <BarChart
+        style={styles.graphStyle}
+        data={data}
+        width={screenWidth}
+        height={250}
+        yAxisLabel={name}
+        chartConfig={chartConfig}
+        verticalLabelRotation={-20}
+      />
     </View>
   );
 }
@@ -91,6 +106,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  graphStyle: {
+    flex: 1,
+    paddingRight: 25,
   },
   title: {
     fontSize: 20,
