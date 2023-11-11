@@ -25,7 +25,7 @@ export interface MyInformationResponse {
 export interface MyInformation {
   readonly username: string;
   readonly user_mail: string;
-  readonly phone: string;
+  readonly phone_number: string;
   readonly bio?: string | null;
   readonly icon?: string | null;
 }

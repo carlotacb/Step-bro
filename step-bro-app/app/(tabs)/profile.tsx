@@ -1,58 +1,136 @@
-import { Platform, StyleSheet } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
+import { StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { Avatar, Button, TextInput as Input } from 'react-native-paper';
 import { Text, View } from '../../components/Themed';
-import { getUserInformation } from '../../utils/axios';
+import { getUserInformation, updateUserInformation } from '../../utils/axios';
 import { getToken } from '../../utils/utils';
 
+const defaultAvatar = require('../../assets/images/avatar.png');
+
+const token = getToken();
+let initialUsername = '';
+let email = '';
+let phoneNumber = '';
+let initialBio = '';
+
+if (token === '') {
+  router.replace('/login');
+} else {
+  getUserInformation(token).then((response) => {
+    initialUsername = response.information?.username || '';
+    email = response.information?.user_mail || '';
+    phoneNumber = response.information?.phone_number || '';
+    initialBio = response.information?.bio || '';
+  });
+}
+
 export default function ProfileScreen() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [bio, setBio] = useState('');
+  const [bio, setBio] = useState(initialBio);
+  const [avatar, setAvatar] = useState(defaultAvatar);
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState(initialUsername);
 
-  const token = getToken();
-
-  console.log(token);
-  if (token === '') {
-    router.replace('/login');
-  } else {
-    console.log('test');
-    getUserInformation(token).then((response) => {
-      console.log(response);
-      setUsername(response.information?.username || '');
-      setEmail(response.information?.user_mail || '');
-      setPhoneNumber(response.information?.phone || '');
-      setBio(response.information?.bio || '');
+  function updateProfile() {
+    setLoading(true);
+    updateUserInformation(token, bio, username).then((response) => {
+      if (response.error) {
+        setLoading(false);
+      } else {
+        setLoading(false);
+        return router.replace('/home');
+      }
     });
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        Hello,
-        {' '}
-        {username}
-      </Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>
+          Update your profile
+        </Text>
+      </View>
+      <View style={styles.formContainer}>
+        <Input
+          selectionColor="#79AF6C"
+          underlineColor="transparent"
+          mode="outlined"
+          disabled
+          label="Email"
+          enterKeyHint="next"
+          value={email}
+        />
+        <Input
+          selectionColor="#79AF6C"
+          underlineColor="transparent"
+          mode="outlined"
+          disabled
+          label="Phone number"
+          enterKeyHint="next"
+          value={phoneNumber}
+        />
+        <Input
+          selectionColor="#79AF6C"
+          underlineColor="transparent"
+          mode="outlined"
+          label="Username"
+          enterKeyHint="next"
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          autoCapitalize="none"
+          textContentType="username"
+        />
+        <Input
+          selectionColor="#79AF6C"
+          underlineColor="transparent"
+          mode="outlined"
+          label="Biography"
+          enterKeyHint="next"
+          value={bio}
+          onChangeText={(text) => setBio(text)}
+          autoCapitalize="none"
+          multiline
+          numberOfLines={5}
+        />
+        <Button
+          mode="elevated"
+          onPress={() => updateProfile()}
+          buttonColor="#79AF6C"
+          textColor="#FFFFFF"
+          loading={loading}
+          style={{ marginTop: 15 }}
+        >
+          {loading ? 'Loading...' : 'Confirm changes' }
+        </Button>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 80,
+    paddingBottom: 80,
+    paddingLeft: 50,
+    paddingRight: 50,
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 30,
+  },
+  formContainer: {
+    marginTop: 50,
     width: '80%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 20,
   },
 });

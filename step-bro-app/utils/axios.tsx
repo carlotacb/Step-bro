@@ -73,3 +73,25 @@ export async function getUserInformation(token: string): Promise<MyInformationRe
     return { error: true };
   }
 }
+
+export async function updateUserInformation(token: string, bio: string, username: string): Promise<MyInformationResponse> {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseURL}/users`,
+      headers: {
+        token,
+      },
+      data: {
+        bio,
+        username,
+      },
+    });
+
+    console.log(response.data.user);
+    return { information: { ...response.data.user }, error: false };
+  } catch (error) {
+    console.log(error);
+    return { error: true };
+  }
+}
