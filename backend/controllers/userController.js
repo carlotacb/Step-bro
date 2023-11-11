@@ -102,7 +102,7 @@ const UserController = () => {
       const userPwd = req.body.password ?? originalUser.rows[0].passwd;
       const bio = req.body.bio ?? originalUser.rows[0].bio;
       const icon = req.body.icon ?? originalUser.rows[0].icon;
-      const result = await db.query('UPDATE users SET username = $1,	passwd = $2, bio = $3, icon = $4 WHERE user_mail = $5;', [username, userPwd, bio, icon, email]);
+      const result = await db.query('UPDATE users SET username = $1, passwd = $2, bio = $3, icon = $4 WHERE user_mail = $5;', [username, userPwd, bio, icon, email]);
       
         return res.status(200).json({ success: true});
     } catch (err) {
