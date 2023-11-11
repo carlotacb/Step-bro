@@ -3,15 +3,16 @@ const db = require("../db.js");
 const UserController = () => {
 
   const createUser = async (req, res) => {
-    const email = req.body.email;
+    const user_mail = req.body.user_mail;
     const username = req.body.username;
     const userPwd = req.body.password;
     const phone = req.body.phone;
     const bio = req.body.bio;
     const icon = req.body.icon;
     try {
-      const result = await db.query('INSERT INTO users(user_mail, phone_number, username, passwd, bio, icon) VALUES($1, $2, $3, $4, $5, $6);', [email, phone, username, userPwd, bio, icon]);
-      return res.status(201).json({success:true, message:result.rows[0]});
+      const result = await db.query('INSERT INTO users(user_mail, phone_number, username, passwd, bio, icon) VALUES($1, $2, $3, $4, $5, $6);', [user_mail, phone, username, userPwd, bio, icon]);
+      const user = await db.query('SELECT * FROM users WHERE users.user_mail=$1', [user_mail]);
+      return res.status(201).json({success:true, token:user.rows[0].user_mail});
     } catch (err) {
       console.error(err);
       return res.status(500).json({success:false, message:'Internal Server Error'});

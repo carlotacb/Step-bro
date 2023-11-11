@@ -23,9 +23,9 @@ const AuthController = () => {
     const register = async (req, res) => { 
         const userController = UserController();
         const response = await userController.createUser(req, res);
-        //TODO TOKEN MANAGMENT
+        console.log(response.body);
         if(response.status === 201){
-            return res.status(201);
+            return res.status(200).json({success: true, token: response.body.user_mail});
         } else {    
             return res.status(500);
         }
