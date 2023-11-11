@@ -3,16 +3,26 @@ const db = require("../db");
 const StatusController = () => {
     const getStatsDay = async (req, res) => {
         const userMail = req.get('token');
+        
+        // get all steps on stats from this specific day and user   
+        
+        try {
+            const result = await db.query('SELECT stats.steps FROM stats WHERE stats_day = CURRENT_DATE AND user_mail=$1', [userMail]);
+            return res.status(200).json({ success: true, message: result.rows });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+    }
 
-        // get day month and year
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const day = date.getDate();
+    const getStatsWeek = async (req, res) => {
+        const userMail = req.get('token');
+
+        
 
         // get all steps on stats from this specific day and user   
         try {
-            const result = await db.query('SELECT * FROM stats WHERE user_mail=$1 AND EXTRACT(YEAR FROM stats_day)=$2 AND EXTRACT(MONTH FROM stats_day)=$3 AND EXTRACT(DAY FROM stats_day)=$4', [userMail, year, month, day]);
+            const result = await db.query('select steps, TO_CHAR(stats_day, \'DD-MM-YYYY\') AS stats_day from stats where user_mail=$1 and stats_day between current_date - INTERVAL \'7 days\' AND current_date;', [userMail]);
             return res.status(200).json({ success: true, message: result.rows });
         } catch (err) {
             console.error(err);
@@ -32,7 +42,7 @@ const StatusController = () => {
 
         // check if steps on this day already exists
         try {
-            const result = await db.query('SELECT * FROM stats WHERE user_mail=$1 AND EXTRACT(YEAR FROM stats_day)=$2 AND EXTRACT(MONTH FROM stats_day)=$3 AND EXTRACT(DAY FROM stats_day)=$4', [userMail, year, month, day]);
+            const result = await db.query('SELECT dates FROM stats WHERE user_mail=$1 AND EXTRACT(YEAR FROM stats_day)=$2 AND EXTRACT(MONTH FROM stats_day)=$3 AND EXTRACT(DAY FROM stats_day)=$4', [userMail, year, month, day]);
             if (result.rows.length === 0) {
                 // create new entry
                 try {
@@ -40,7 +50,7 @@ const StatusController = () => {
                     return res.status(200).json({ success: true });
                 } catch (err) {
                     console.error(err);
-                    return res.status(500).json({ success: false, message: 'Internal Server Error' });
+                    return res.status(400).json({ success: false, message: 'Error adding new steps entry to stats.' });
                 }
             } else {
                 // update steps depending pushing the entire date
@@ -49,7 +59,7 @@ const StatusController = () => {
                     return res.status(200).json({ success: true });
                 } catch (err) {
                     console.error(err);
-                    return res.status(500).json({ success: false, message: 'Internal Server Error' });
+                    return res.status(400).json({ success: false, message: 'Error updating daily steps.' });
                 }
             }
         } catch (err) {
@@ -60,6 +70,7 @@ const StatusController = () => {
 
     return {
         getStatsDay,
+        getStatsWeek,
         updateStatsDay,
     };
 };

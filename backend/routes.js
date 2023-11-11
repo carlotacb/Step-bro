@@ -17,9 +17,12 @@ const statusController = StatusController();
 router.post('/login', authController.login);
 router.post('/register', authController.register);
 
+router.get('/profile', userController.getUserByToken);
+router.get('/myLeagues', userController.getMyLeagues)
+
 router.get('/users/:email', userController.getUserByEmail);
-router.put('/users/:email', userController.updateUser);
-router.delete('/users/:email', userController.deleteUser);
+router.put('/users/', userController.updateUser);
+router.delete('/users/', userController.deleteUser);
 
 router.get('/users', userController.getAllUsers);
 router.post('/users', userController.createUser);
@@ -36,7 +39,8 @@ router.post('/userleague', userLeagueController.inviteLeague);
 router.delete('/userleague', userLeagueController.leaveLeague);
 
 // stats routes
-router.get('/stats', statusController.getStatsDay);
+router.get('/stats/day', statusController.getStatsDay);
+router.get('/stats/week', statusController.getStatsWeek);
 router.post('/stats', statusController.updateStatsDay);
 
 
