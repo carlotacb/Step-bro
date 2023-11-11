@@ -22,6 +22,15 @@ export interface MyInformationResponse {
   readonly error: boolean;
 }
 
+export interface MyStats {
+  readonly stats?: WeekRecord[];
+  readonly error: boolean;
+}
+
+export interface WeekRecord {
+  readonly stats_day: Date;
+  readonly steps: number;
+}
 export interface MyInformation {
   readonly username: string;
   readonly user_mail: string;

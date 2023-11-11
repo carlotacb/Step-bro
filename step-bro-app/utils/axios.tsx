@@ -1,7 +1,8 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
 import md5 from 'md5';
 import {
-  LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse,
+  LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse, MyStats,
 } from './responsesTypes';
 
 const baseURL = 'http://185.26.49.230:8080/api';
@@ -89,6 +90,24 @@ export async function updateUserInformation(
     });
     return { information: { ...response.data.user }, error: false };
   } catch (error) {
+    return { error: true };
+  }
+}
+
+export async function getUserStats(token: string): Promise<MyStats> {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseURL}/stats/week`,
+      headers: {
+        token,
+      },
+    });
+
+    console.log(response.data.user);
+    return { stats: { ...response.data.message }, error: false };
+  } catch (error) {
+    console.log(error);
     return { error: true };
   }
 }
