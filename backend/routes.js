@@ -18,15 +18,13 @@ module.exports = {
 };
 
 // Define routes
-// router.post('/login', AuthController.login);
-// router.post('/register', AuthController.register);
+router.post('/login', authController.login);
+router.post('/register', authController.register);
 
-// router.get('/users/:id', UserController.getUserById);
+router.get('/users/:id', userController.getUserById);
 
 router.get('/users', userController.getAllUsers);
 
-
-// register user  route with email, username, password, phone, bio and icon
-// router.post('/users', UserController.createUser);
+router.post('/users', userController.createUser);
 
 module.exports = router;
