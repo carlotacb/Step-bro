@@ -1,4 +1,6 @@
-const UserController = require("./userController");
+const {UserController} = require("./userController");
+
+
 const db = require("../db.js");
 
 const AuthController = () => {
@@ -19,12 +21,13 @@ const AuthController = () => {
         };
 
     const register = async (req, res) => { 
-        const response = await UserController.createUser(req, res);
+        const userController = UserController();
+        const response = await userController.createUser(req, res);
         //TODO TOKEN MANAGMENT
         if(response.status === 201){
-            return res.status(201).send(response);
+            return res.status(201);
         } else {    
-            return res.status(500).send(response);
+            return res.status(500);
         }
     };
 

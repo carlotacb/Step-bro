@@ -13,8 +13,8 @@ const leagueController = LeagueController();
 router.post('/login', authController.login);
 router.post('/register', authController.register);
 
-// User routes
-router.get('/users/:id', userController.getUserById);
+router.get('/users/:email', userController.getUserByEmail);
+
 router.get('/users', userController.getAllUsers);
 router.post('/users', userController.createUser);
 
