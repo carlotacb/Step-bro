@@ -3,16 +3,9 @@ const db = require("../db");
 const StatusController = () => {
     const getStatsDay = async (req, res) => {
         const userMail = req.get('token');
-
-        // get day month and year
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const day = date.getDate();
-
         // get all steps on stats from this specific day and user   
         try {
-            const result = await db.query('SELECT * FROM stats WHERE user_mail=$1 AND EXTRACT(YEAR FROM stats_day)=$2 AND EXTRACT(MONTH FROM stats_day)=$3 AND EXTRACT(DAY FROM stats_day)=$4', [userMail, year, month, day]);
+            const result = await db.query(' select * from stats where user_mail=$1 and stats_day between current_date - INTERVAL \'7 days\' AND current_date;', [userMail]);
             return res.status(200).json({ success: true, message: result.rows });
         } catch (err) {
             console.error(err);
