@@ -11,7 +11,7 @@ const authController = AuthController();
 router.post('/login', authController.login);
 router.post('/register', authController.register);
 
-router.get('/users/:id', userController.getUserById);
+router.get('/users/:email', userController.getUserByEmail);
 
 router.get('/users', userController.getAllUsers);
 
