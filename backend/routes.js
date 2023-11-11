@@ -36,7 +36,8 @@ router.post('/userleague', userLeagueController.joinLeague);
 router.delete('/userleague', userLeagueController.leaveLeague);
 
 // stats routes
-router.get('/stats', statusController.getStatsDay);
+router.get('/stats/day', statusController.getStatsDay);
+router.get('/stats/week', statusController.getStatsDay);
 router.post('/stats', statusController.updateStatsDay);
 
 
