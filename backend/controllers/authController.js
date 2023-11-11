@@ -1,6 +1,12 @@
 const UserController = require("./userController");
 
 const AuthController = () => {
+    let pool;
+
+    const setPool = (newPool) => {
+        pool = newPool;
+    }
+
     const login =
         async (req, res) => {
             const username = req.body.user;
@@ -29,6 +35,7 @@ const AuthController = () => {
     };
 
     return {
+        setPool,
         login,
         register,
     };

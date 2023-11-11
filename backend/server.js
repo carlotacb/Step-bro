@@ -10,6 +10,9 @@ app.use(express.json())
 const routes = require('./routes');
 
 app.use('/api', routes);
+app.use('*', (req, res) => {
+  res.status(404).send('Not Found');
+})
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
