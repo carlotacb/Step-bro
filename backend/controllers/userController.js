@@ -29,7 +29,7 @@ const UserController = () => {
       }
     } catch (err) {
       console.error(err);
-      return res.status(500).send('Internal Server Error');
+      return res.status(500).json({success:false, message:'Internal Server Error'});
     }
 
   };
@@ -47,9 +47,20 @@ const UserController = () => {
         return res.status(200).json({ success: true});
     } catch (err) {
       console.error(err);
-      return res.status(500).send('Internal Server Error');
+      return res.status(500).json({success:false, message:'Internal Server Error'});
     }
   };
+
+  const deleteUser = async (req, res) => {
+    try {
+      const email = req.params.email;
+      const result = await db.query('DELETE FROM users WHERE user_mail = $1;', [email]);
+      return res.status(200).json({ success: true});
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({success:false, message:'Internal Server Error'});
+    }
+  }
 
   const getAllUsers = async (req, res) => {
     try {
@@ -58,7 +69,7 @@ const UserController = () => {
 
     } catch (err) {
       console.error(err);
-      return res.status(500).send('Internal Server Error');
+      return res.status(500).json({success:false, message:'Internal Server Error'});
     }
   };
 
@@ -66,6 +77,7 @@ const UserController = () => {
     createUser,
     getUserByEmail,
     updateUser,
+    deleteUser,
     getAllUsers,
   };
 

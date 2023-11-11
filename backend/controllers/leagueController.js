@@ -30,7 +30,7 @@ const LeagueController = () => {
             return res.status(201).send(result.rows[0]);
         } catch (err) {
             console.error(err);
-            return res.status(500).send('Internal Server Error');
+            return res.status(500).json({success:false, message:'Internal Server Error'});
         }
     }
 
@@ -46,7 +46,7 @@ const LeagueController = () => {
             }
         } catch (err) {
             console.error(err);
-            return res.status(500).send('Internal Server Error');
+            return res.status(500).json({success:false, message:'Internal Server Error'});
         }
     }
 
@@ -56,7 +56,7 @@ const LeagueController = () => {
             return res.send(result.rows);
         } catch (err) {
             console.error(err);
-            return res.status(500).send('Internal Server Error');
+            return res.status(500).json({success:false, message:'Internal Server Error'});
         }
     }
 
@@ -75,7 +75,7 @@ const LeagueController = () => {
         }
         catch (err) {
             console.error(err);
-            return res.status(500).send('Internal Server Error');
+            return res.status(500).json({success:false, message:'Internal Server Error'});
         }
         const start_date = req.body.start_date ?? originalLeague.rows[0].start_date;
         const end_date = req.body.end_date ?? originalLeague.rows[0].end_date;
@@ -86,7 +86,7 @@ const LeagueController = () => {
             return res.status(200).json(result.rows[0]);
         } catch (err) {
             console.error(err);
-            return res.status(500).send('Internal Server Error');
+            return res.status(500).json({success:false, message:'Internal Server Error'});
         }
     }
 
@@ -98,7 +98,7 @@ const LeagueController = () => {
             return res.status(204).send('League deleted');
         } catch (err) {
             console.error(err);
-            return res.status(500).send('Internal Server Error');
+            return res.status(500).json({success:false, message:'Internal Server Error'});
         }
     }
 
