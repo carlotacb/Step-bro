@@ -16,6 +16,7 @@ router.post('/register', authController.register);
 router.get('/users/:email', userController.getUserByEmail);
 
 router.get('/users', userController.getAllUsers);
+router.put('/users/:email', userController.updateUser);
 router.post('/users', userController.createUser);
 
 // Leagues routes
