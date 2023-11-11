@@ -61,7 +61,8 @@ const UserController = () => {
   };
 
   const getUserByToken = async (req, res) => {
-    const token = req.get['token'];
+    const token = req.get('token');
+    console.log(token);
     try {
       const result = await db.query('SELECT user_mail,phone_number,username,bio,icon,creation_date,lastupdate_date FROM users WHERE users.user_mail=$1', [token]);
       if (result.rows.length > 0) {
