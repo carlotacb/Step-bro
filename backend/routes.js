@@ -38,6 +38,7 @@ router.delete('/leagues/:creator_mail&:league_name', leagueController.deleteLeag
 // UserLeagues routes
 router.post('/userleague', userLeagueController.inviteLeague);
 router.delete('/userleague', userLeagueController.leaveLeague);
+router.get('/ranking/:league_id', userLeagueController.rankingOfLeague);
 
 // stats routes
 router.get('/stats/day', statusController.getStatsDay);
