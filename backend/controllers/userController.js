@@ -94,7 +94,7 @@ const UserController = () => {
       }
       catch (err) {
           console.error(err);
-          return res.status(500).json({success:false, message:'Internal Server Error'});
+          return res.status(400).json({success:false, message:'Error updating user.'});
       }
 
       const username = req.body.username ?? originalUser.rows[0].username;
@@ -106,7 +106,7 @@ const UserController = () => {
         return res.status(200).json({ success: true});
     } catch (err) {
       console.error(err);
-      return res.status(500).json({success:false, message:'Internal Server Error'});
+      return res.status(400).json({success:false, message:'Error updating user.'});
     }
   };
 
@@ -117,7 +117,7 @@ const UserController = () => {
       return res.status(204).json({ success: true});
     } catch (err) {
       console.error(err);
-      return res.status(500).json({success:false, message:'Internal Server Error'});
+      return res.status(400).json({success:false, message:'Error deleting user.'});
     }
   }
 
@@ -128,9 +128,20 @@ const UserController = () => {
 
     } catch (err) {
       console.error(err);
-      return res.status(500).json({success:false, message:'Internal Server Error'});
+      return res.status(400).json({success:false, message:'Error retrieving users.'});
     }
   };
+
+  const getMyLeagues = async (req, res) => {
+    try {
+      const email = req.get('token');
+      const result = await db.query('SELECT * FROM user_leagues WHERE user_mail = $1;', [email]);
+      return res.status(200).json({ success: true, leagues: result.rows});
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({success:false, message:'Internal Server Error'});
+    }
+  }
 
   return {
     createUser,
@@ -139,6 +150,7 @@ const UserController = () => {
     updateUser,
     deleteUser,
     getAllUsers,
+    getMyLeagues
   };
 
 }
