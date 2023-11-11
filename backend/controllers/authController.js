@@ -2,7 +2,6 @@ const UserController = require("./userController");
 const db = require("../db.js");
 
 const AuthController = () => {
-
     const login =
         async (req, res) => {
             const username = req.body.user;
@@ -12,8 +11,7 @@ const AuthController = () => {
                 if(result.rows.length === 0){
                     return res.status(401).send('Unauthorized');
                 }
-                //TODO TOKEN MANAGMENT
-                return res.status(200).json(result.rows);
+                return res.status(200).json(result.rows[0]['email']);
             } catch (err) {
                 console.error(err);
                 return res.status(500).send('Internal Server Error');
