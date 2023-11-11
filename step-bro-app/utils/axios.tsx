@@ -2,7 +2,7 @@
 import axios from 'axios';
 import md5 from 'md5';
 import {
-  LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse, MyStats,
+  LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse, MyStats, BasicResponse,
 } from './responsesTypes';
 
 const baseURL = 'http://185.26.49.230:8080/api';
@@ -106,6 +106,27 @@ export async function getUserStats(token: string): Promise<MyStats> {
 
     console.log(response.data.user);
     return { stats: { ...response.data.message }, error: false };
+  } catch (error) {
+    console.log(error);
+    return { error: true };
+  }
+}
+
+export async function sendSteps(token:string, steps:number): Promise<BasicResponse> {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `${baseURL}/stats`,
+      headers: {
+        token,
+      },
+      data: {
+        steps,
+      },
+    });
+
+    console.log(response.data.user);
+    return { information: { ...response.data.user }, error: false };
   } catch (error) {
     console.log(error);
     return { error: true };

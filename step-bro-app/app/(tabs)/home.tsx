@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -29,7 +29,7 @@ import {
 import { Pedometer } from 'expo-sensors';
 import { router } from 'expo-router';
 import { getToken } from '../../utils/utils';
-import { getUserInformation, getUserStats } from '../../utils/axios';
+import { getUserInformation, getUserStats, sendSteps } from '../../utils/axios';
 // eslint-disable-next-line import/no-extraneous-dependencies
 const data = {
   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -81,9 +81,16 @@ export default function HomeScreen() {
       username = response.information?.username || '';
     });
   }
-
+  const ref = useRef(null);
   useEffect(() => {
     calculator();
+    ref.current = setInterval(sendSteps, 1 * 60 * 1000);
+
+    return () => {
+      if (ref.current) {
+        clearInterval(ref.current);
+      }
+    };
   }, []);
   const calculator = () => {
     const calculed = Pedometer.watchStepCount((result) => {
