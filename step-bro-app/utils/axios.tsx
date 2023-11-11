@@ -1,13 +1,17 @@
 import axios from 'axios';
-import { LoginBody, LoginResponse } from './responsesTypes';
+import bcrypt from 'react-native-bcrypt';
+import { LoginBody, LoginResponse, RegisterBody } from './responsesTypes';
 
 const baseURL = 'http://185.26.49.230:8080/api';
+const salt = bcrypt.genSaltSync(10);
 
 export async function login(email: string, password: string): Promise<LoginResponse> {
+  const hash = bcrypt.hashSync(password, salt);
   const data: LoginBody = {
     user_mail: email,
-    password,
+    password: hash,
   };
+
   try {
     const response = await axios({
       method: 'post',
@@ -16,23 +20,34 @@ export async function login(email: string, password: string): Promise<LoginRespo
     });
     return { token: response.data.user_mail, error: false };
   } catch (error) {
-    console.log(error);
     return { error: true };
   }
 }
 
-export async function register(username: string, password: string): Promise<LoginResponse> {
-  const data: LoginBody = {
-    user_mail: username,
-    password,
+export async function register(
+  username: string,
+  email: string,
+  phone: string,
+  password: string,
+  bio: string,
+):
+  Promise<LoginResponse> {
+  const hash = bcrypt.hashSync(password, salt);
+  const data: RegisterBody = {
+    username,
+    user_mail: email,
+    phone,
+    password: hash,
+    bio,
   };
+
   try {
     const response = await axios({
       method: 'post',
       url: `${baseURL}/register`,
-      data: JSON.stringify({ username, password }),
+      data,
     });
-    console.log(response);
+
     return { token: response.data, error: false };
   } catch (error) {
     return { error: true };

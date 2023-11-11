@@ -1,9 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { useState } from 'react';
 import { Button, TextInput as Input } from 'react-native-paper';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
+import icon from 'react-native-paper/src/components/Icon';
 import { Text, View } from '../components/Themed';
+import { login, register } from '../utils/axios';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
@@ -12,7 +15,26 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [bio, setBio] = useState('');
   const [errorText, setErrorText] = useState('');
-  const [loadingLogin, setLoadingLogin] = useState(false);
+  const [loadingRegister, setLoadingRegister] = useState(false);
+
+  function registerFunction() {
+    setLoadingRegister(true);
+    register(username, email, phoneNumber, password, bio).then((response) => {
+      if (response.error) {
+        setErrorText('There is an error... The email already exists!');
+        setLoadingRegister(false);
+      } else {
+        setErrorText('');
+        setLoadingRegister(false);
+        if (Platform.OS === 'web') {
+          localStorage.setItem('userToken', response.token || '');
+        } else {
+          SecureStore.setItemAsync('userToken', response.token || '');
+        }
+        return router.replace('/home');
+      }
+    });
+  }
 
   return (
     <View style={styles.container}>
@@ -77,19 +99,19 @@ export default function LoginScreen() {
           multiline
           numberOfLines={5}
         />
+        <Text style={styles.error}>{errorText}</Text>
         <Button
           mode="elevated"
-          onPress={() => console.log(`The username is ${username} and the password is ${password}`)}
+          onPress={() => registerFunction()}
           buttonColor="#79AF6C"
           textColor="#FFFFFF"
-          loading={loadingLogin}
+          loading={loadingRegister}
           style={{ marginTop: 15 }}
         >
-          Sign Up
+          {loadingRegister ? 'Loading...' : 'Sign up' }
         </Button>
         <Text style={styles.logInText}>
           You have an account?
-          {' '}
           {' '}
           <Link href="/login" style={styles.logInButton}>Log in</Link>
         </Text>

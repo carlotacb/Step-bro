@@ -13,8 +13,8 @@ export interface RegisterBody {
   user_mail: string;
   phone: string;
   password: string;
-  bio?: string;
-  icon?: string;
+  bio?: string | null;
+  icon?: string | null;
 }
 
 export interface RegisterResponse {

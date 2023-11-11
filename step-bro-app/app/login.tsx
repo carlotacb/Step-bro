@@ -1,8 +1,9 @@
-import { Image, StyleSheet } from 'react-native';
+import { Image, Platform, StyleSheet } from 'react-native';
 
 import { useState } from 'react';
 import { Button, TextInput as Input } from 'react-native-paper';
-import { Link, Redirect, router } from 'expo-router';
+import { Link, router } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 import { Text, View } from '../components/Themed';
 import { login } from '../utils/axios';
 
@@ -22,7 +23,11 @@ export default function LoginScreen() {
       } else {
         setErrorText('');
         setLoadingLogin(false);
-
+        if (Platform.OS === 'web') {
+          localStorage.setItem('userToken', response.token || '');
+        } else {
+          SecureStore.setItemAsync('userToken', response.token || '');
+        }
         return router.replace('/home');
       }
     });
@@ -66,7 +71,7 @@ export default function LoginScreen() {
           loading={loadingLogin}
           style={{ marginTop: 15 }}
         >
-          Log in
+          {loadingLogin ? 'Loading...' : 'Log in' }
         </Button>
         <Text style={styles.signUpText}>
           You don’t have an account yet?
