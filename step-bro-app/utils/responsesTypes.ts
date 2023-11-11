@@ -3,7 +3,7 @@ export interface LoginBody {
   password: string;
 }
 
-export interface LoginResponse {
+export interface LoginOrRegisterResponse {
   readonly token?: string;
   readonly error: boolean;
 }
@@ -17,12 +17,19 @@ export interface RegisterBody {
   icon?: string | null;
 }
 
-export interface RegisterResponse {
-  readonly token?: string;
+export interface MyInformationResponse {
+  readonly information?: MyInformation;
   readonly error: boolean;
 }
 
 export interface WeekRecord {
   readonly token?: string;
   readonly steps: string | null;
+}
+export interface MyInformation {
+  readonly username: string;
+  readonly user_mail: string;
+  readonly phone: string;
+  readonly bio?: string | null;
+  readonly icon?: string | null;
 }

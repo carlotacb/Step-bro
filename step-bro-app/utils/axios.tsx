@@ -1,13 +1,15 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import bcrypt from 'react-native-bcrypt';
 import {
-  LoginBody, LoginResponse, RegisterBody, WeekRecord,
+  LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse,
 } from './responsesTypes';
 
 const baseURL = 'http://185.26.49.230:8080/api';
 const salt = bcrypt.genSaltSync(10);
 
-export async function login(email: string, password: string): Promise<LoginResponse> {
+export async function login(email: string, password: string): Promise<LoginOrRegisterResponse> {
   const hash = bcrypt.hashSync(password, salt);
   const data: LoginBody = {
     user_mail: email,
@@ -33,7 +35,7 @@ export async function register(
   password: string,
   bio: string,
 ):
-  Promise<LoginResponse> {
+    Promise<LoginOrRegisterResponse> {
   const hash = bcrypt.hashSync(password, salt);
   const data: RegisterBody = {
     username,
@@ -56,18 +58,18 @@ export async function register(
   }
 }
 
-export async function getUserInfo(token:string):
-  Promise<{token:string}> {
+export async function getUserInformation(token: string): Promise<MyInformationResponse> {
   try {
     const response = await axios({
       method: 'get',
-      url: `${baseURL}/stats/week`,
+      url: `${baseURL}/profile`,
       headers: {
         token,
       },
     });
 
-    return { ...response.data, error: false };
+    console.log(response.data.user);
+    return { information: { ...response.data.user }, error: false };
   } catch (error) {
     console.log(error);
     return { error: true };

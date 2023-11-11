@@ -27,9 +27,11 @@ export default function LoginScreen() {
         setErrorText('');
         setLoadingRegister(false);
         if (Platform.OS === 'web') {
-          localStorage.setItem('userToken', response.token || '');
+          console.log(response.token.token);
+          localStorage.setItem('userToken', response.token.token || '');
         } else {
-          SecureStore.setItemAsync('userToken', response.token || '');
+          console.log(response.token.token);
+          SecureStore.setItem('userToken', response.token || '');
         }
         return router.replace('/home');
       }
@@ -45,7 +47,7 @@ export default function LoginScreen() {
           underlineColor="transparent"
           mode="outlined"
           label="Username"
-          returnKeyType="next"
+          enterKeyHint="next"
           value={username}
           onChangeText={(text) => setUsername(text)}
           autoCapitalize="none"
@@ -56,31 +58,31 @@ export default function LoginScreen() {
           underlineColor="transparent"
           mode="outlined"
           label="Email"
-          returnKeyType="next"
+          enterKeyHint="next"
           value={email}
           onChangeText={(text) => setEmail(text)}
           autoCapitalize="none"
           textContentType="emailAddress"
-          keyboardType="email-address"
+          inputMode="email"
         />
         <Input
           selectionColor="#79AF6C"
           underlineColor="transparent"
           mode="outlined"
           label="Phone number"
-          returnKeyType="next"
+          enterKeyHint="next"
           value={phoneNumber}
           onChangeText={(text) => setPhoneNumber(text)}
           autoCapitalize="none"
           textContentType="telephoneNumber"
-          keyboardType="phone-pad"
+          inputMode="tel"
         />
         <Input
           selectionColor="#79AF6C"
           underlineColor="transparent"
           mode="outlined"
           label="Password"
-          returnKeyType="next"
+          enterKeyHint="next"
           value={password}
           onChangeText={(text) => setPassword(text)}
           autoCapitalize="none"
@@ -92,7 +94,7 @@ export default function LoginScreen() {
           underlineColor="transparent"
           mode="outlined"
           label="Biography"
-          returnKeyType="next"
+          enterKeyHint="next"
           value={bio}
           onChangeText={(text) => setBio(text)}
           autoCapitalize="none"
