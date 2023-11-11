@@ -18,7 +18,8 @@ router.post('/login', authController.login);
 router.post('/register', authController.register);
 
 router.get('/profile', userController.getUserByToken);
-router.get('/myLeagues', userController.getMyLeagues)
+router.get('/myLeagues', userController.getMyLeagues);
+router.get('/myLeagues/:league_id', userController.getLeagueById);
 
 router.get('/users/:email', userController.getUserByEmail);
 router.put('/users/', userController.updateUser);
