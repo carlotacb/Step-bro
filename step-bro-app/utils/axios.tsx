@@ -6,11 +6,12 @@ import {
   LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse, MyStats,
 } from './responsesTypes';
 
+const md5 = require('md5');
+
 const baseURL = 'http://185.26.49.230:8080/api';
-const salt = bcrypt.genSaltSync(10);
 
 export async function login(email: string, password: string): Promise<LoginOrRegisterResponse> {
-  const hash = bcrypt.hashSync(password, salt);
+  const hash = md5(password);
   const data: LoginBody = {
     user_mail: email,
     password: hash,
@@ -35,8 +36,8 @@ export async function register(
   password: string,
   bio: string,
 ):
-    Promise<LoginOrRegisterResponse> {
-  const hash = bcrypt.hashSync(password, salt);
+  Promise<LoginOrRegisterResponse> {
+  const hash = md5(password);
   const data: RegisterBody = {
     username,
     user_mail: email,
@@ -88,6 +89,23 @@ export async function getUserStats(token: string): Promise<MyStats> {
 
     console.log(response.data.user);
     return { stats: { ...response.data.message }, error: false };
+
+export async function updateUserInformation(token: string, bio: string, username: string): Promise<MyInformationResponse> {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseURL}/users`,
+      headers: {
+        token,
+      },
+      data: {
+        bio,
+        username,
+      },
+    });
+
+    console.log(response.data.user);
+    return { information: { ...response.data.user }, error: false };
   } catch (error) {
     console.log(error);
     return { error: true };
