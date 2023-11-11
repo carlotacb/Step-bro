@@ -55,6 +55,7 @@
     "react/react-in-jsx-scope": "off",
     "no-use-before-define": "off",
     "react/no-unescaped-entities": "off",
+    "react/jsx-props-no-spreading": "off",
     "no-param-reassign": [2, {"props": false}],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.test.tsx", "**/*mock-utils.ts"]}]
   }
