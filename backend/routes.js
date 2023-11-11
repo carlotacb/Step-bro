@@ -5,11 +5,13 @@ const {UserController} = require('./controllers/userController');
 const {AuthController} = require('./controllers/authController');
 const {LeagueController} = require('./controllers/leagueController');
 const {UserLeagueController} = require('./controllers/userLeaguesController');
+const {StatusController} = require('./controllers/statusController');
 
 const userController = UserController();
 const authController = AuthController();
 const leagueController = LeagueController();
 const userLeagueController = UserLeagueController();
+const statusController = StatusController();
 
 // Auth routes
 router.post('/login', authController.login);
@@ -32,6 +34,10 @@ router.delete('/leagues/:creator_mail&:league_name', leagueController.deleteLeag
 // UserLeagues routes
 router.post('/userleague', userLeagueController.joinLeague);
 router.delete('/userleague', userLeagueController.leaveLeague);
+
+// stats routes
+router.get('/stats', statusController.getStatsDay);
+router.post('/stats', statusController.updateStatsDay);
 
 
 module.exports = router;

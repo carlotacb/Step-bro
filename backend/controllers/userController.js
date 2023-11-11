@@ -11,7 +11,7 @@ const UserController = () => {
     const icon = req.body.icon;
     try {
       const result = await db.query('INSERT INTO users(user_mail, phone_number, username, passwd, bio, icon) VALUES($1, $2, $3, $4, $5, $6);', [email, phone, username, userPwd, bio, icon]);
-      return res.status(201).json({success:true, message:result.rows[0]});
+      return res.status(201).json({success:true, message:result.rows[0]['email']});
     } catch (err) {
       console.error(err);
       return res.status(500).json({success:false, message:'Internal Server Error'});
