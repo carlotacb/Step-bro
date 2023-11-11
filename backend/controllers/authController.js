@@ -1,18 +1,14 @@
 const UserController = require("./userController");
+const db = require("../db.js");
 
 const AuthController = () => {
-    let pool;
-
-    const setPool = (newPool) => {
-        pool = newPool;
-    }
 
     const login =
         async (req, res) => {
             const username = req.body.user;
             const userPwd = req.body.pwd;
             try {
-                const result = await pool.query('SELECT * FROM users WHERE users.username=$1 AND users.passwd=$2', [username, userPwd]);
+                const result = await db.query('SELECT * FROM users WHERE users.username=$1 AND users.passwd=$2', [username, userPwd]);
                 if(result.rows.length === 0){
                     return res.status(401).send('Unauthorized');
                 }
@@ -35,7 +31,6 @@ const AuthController = () => {
     };
 
     return {
-        setPool,
         login,
         register,
     };
