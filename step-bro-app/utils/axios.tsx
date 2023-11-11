@@ -126,7 +126,7 @@ export async function sendSteps(token:string, steps:number): Promise<BasicRespon
     });
 
     console.log(response.data.user);
-    return { information: { ...response.data.user }, error: false };
+    return { error: false };
   } catch (error) {
     console.log(error);
     return { error: true };
