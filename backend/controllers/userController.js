@@ -9,6 +9,31 @@ const UserController = () => {
     const phone = req.body.phone;
     const bio = req.body.bio;
     const icon = req.body.icon;
+    //check if mail exists
+    try {
+      const result = await db.query('SELECT * FROM users WHERE users.user_mail=$1', [user_mail]);
+      if(result.rows.length > 0){
+        return res.status(409).json({success:false, message:'Email already exists'});
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({success:false, message:'Internal Server Error'});
+    }
+
+    // check if phone
+    try {
+      const result = await db.query('SELECT * FROM users WHERE users.phone_number=$1', [phone]);
+      if(result.rows.length > 0){
+        return res.status(409).json({success:false, message:'Phone already exists'});
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({success:false, message:'Internal Server Error'});
+    }
+
+
+    // create user
+    console.log(req.body);
     try {
       const result = await db.query('INSERT INTO users(user_mail, phone_number, username, passwd, bio, icon) VALUES($1, $2, $3, $4, $5, $6);', [user_mail, phone, username, userPwd, bio, icon]);
       const user = await db.query('SELECT * FROM users WHERE users.user_mail=$1', [user_mail]);
