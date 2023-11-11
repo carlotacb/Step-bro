@@ -1,7 +1,6 @@
 const { json, raw} = require("express");
 const db = require("../db.js");
 const e = require("express");
-const auth = Buffer.from('u5f50a388c5c1dcd45117cd910dc05587:17E9826F479772C0E7A1687C47DD9387').toString("base64");
 require('dotenv').config()
 const autToken = process.env.AUTHTOKEN
 const auth = Buffer.from(autToken).toString("base64");
