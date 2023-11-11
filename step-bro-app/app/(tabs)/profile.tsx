@@ -1,12 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Avatar, Button, TextInput as Input } from 'react-native-paper';
+import { Button, TextInput as Input } from 'react-native-paper';
+import * as SecureStore from 'expo-secure-store';
 import { Text, View } from '../../components/Themed';
 import { getUserInformation, updateUserInformation } from '../../utils/axios';
 import { getToken } from '../../utils/utils';
-
-const defaultAvatar = require('../../assets/images/avatar.png');
 
 const token = getToken();
 let initialUsername = '';
@@ -27,7 +26,6 @@ if (token === '') {
 
 export default function ProfileScreen() {
   const [bio, setBio] = useState(initialBio);
-  const [avatar, setAvatar] = useState(defaultAvatar);
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState(initialUsername);
 
@@ -41,6 +39,16 @@ export default function ProfileScreen() {
         return router.replace('/home');
       }
     });
+  }
+
+  function logout() {
+    setLoading(true);
+    if (Platform.OS === 'web') {
+      localStorage.removeItem('userToken');
+      router.replace('/login');
+    } else {
+      SecureStore.deleteItemAsync('userToken').then(() => router.replace('/login'));
+    }
   }
 
   return (
@@ -92,16 +100,32 @@ export default function ProfileScreen() {
           multiline
           numberOfLines={5}
         />
-        <Button
-          mode="elevated"
-          onPress={() => updateProfile()}
-          buttonColor="#79AF6C"
-          textColor="#FFFFFF"
-          loading={loading}
-          style={{ marginTop: 15 }}
+        <View
+          style={{
+            marginTop: 15, display: 'flex', flexDirection: 'row', justifyContent: 'space-between',
+          }}
         >
-          {loading ? 'Loading...' : 'Confirm changes' }
-        </Button>
+          <Button
+            mode="elevated"
+            onPress={() => updateProfile()}
+            buttonColor="#79AF6C"
+            textColor="#FFFFFF"
+            style={{ width: '46%' }}
+            loading={loading}
+          >
+            {loading ? 'Loading...' : 'Confirm changes' }
+          </Button>
+          <Button
+            mode="elevated"
+            onPress={() => logout()}
+            buttonColor="#C96568"
+            textColor="#FFFFFF"
+            style={{ width: '46%' }}
+            loading={loading}
+          >
+            Log out
+          </Button>
+        </View>
       </View>
     </View>
   );

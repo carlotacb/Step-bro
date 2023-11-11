@@ -4,9 +4,8 @@ import { useState } from 'react';
 import { Button, TextInput as Input } from 'react-native-paper';
 import { Link, router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import icon from 'react-native-paper/src/components/Icon';
 import { Text, View } from '../components/Themed';
-import { login, register } from '../utils/axios';
+import { register } from '../utils/axios';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
@@ -27,9 +26,9 @@ export default function LoginScreen() {
         setErrorText('');
         setLoadingRegister(false);
         if (Platform.OS === 'web') {
-          localStorage.setItem('userToken', response.token.token || '');
+          localStorage.setItem('userToken', response.token || '');
         } else {
-          SecureStore.setItem('userToken', response.token.token || '');
+          SecureStore.setItem('userToken', response.token || '');
         }
         return router.replace('/home');
       }
