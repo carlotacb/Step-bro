@@ -20,6 +20,25 @@ const StatusController = () => {
         }
     }
 
+    const getStatsWeek = async (req, res) => {
+        const userMail = req.get('token');
+
+        // get day month and year
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const day = date.getDate();
+
+        // get all steps on stats from this specific day and user   
+        try {
+            const result = await db.query('SELECT * FROM stats WHERE user_mail=$1 AND EXTRACT(YEAR FROM stats_day)=$2 AND EXTRACT(MONTH FROM stats_day)=$3 AND EXTRACT(DAY FROM stats_day)=$4', [userMail, year, month, day]);
+            return res.status(200).json({ success: true, message: result.rows });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+    }
+
     const updateStatsDay = async (req, res) => {
         const userMail = req.get('token');
         const steps = req.body.steps;
