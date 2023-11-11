@@ -1,12 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import bcrypt from 'react-native-bcrypt';
+import md5 from 'md5';
 import {
-  LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse, MyStats,
+  LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse, MyStats, BasicResponse,
 } from './responsesTypes';
-
-const md5 = require('md5');
 
 const baseURL = 'http://185.26.49.230:8080/api';
 
@@ -53,7 +50,7 @@ export async function register(
       data,
     });
 
-    return { token: response.data, error: false };
+    return { token: response.data.token, error: false };
   } catch (error) {
     return { error: true };
   }
@@ -68,11 +65,31 @@ export async function getUserInformation(token: string): Promise<MyInformationRe
         token,
       },
     });
-
-    console.log(response.data.user);
     return { information: { ...response.data.user }, error: false };
   } catch (error) {
-    console.log(error);
+    return { error: true };
+  }
+}
+
+export async function updateUserInformation(
+  token: string,
+  bio: string,
+  username: string,
+): Promise<MyInformationResponse> {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseURL}/users`,
+      headers: {
+        token,
+      },
+      data: {
+        bio,
+        username,
+      },
+    });
+    return { information: { ...response.data.user }, error: false };
+  } catch (error) {
     return { error: true };
   }
 }
@@ -94,23 +111,22 @@ export async function getUserStats(token: string): Promise<MyStats> {
     return { error: true };
   }
 }
-// eslint-disable-next-line max-len
-export async function updateUserInformation(token: string, bio: string, username: string): Promise<MyInformationResponse> {
+
+export async function sendSteps(token:string, steps:number): Promise<BasicResponse> {
   try {
     const response = await axios({
-      method: 'put',
-      url: `${baseURL}/users`,
+      method: 'post',
+      url: `${baseURL}/stats`,
       headers: {
         token,
       },
       data: {
-        bio,
-        username,
+        steps,
       },
     });
 
     console.log(response.data.user);
-    return { information: { ...response.data.user }, error: false };
+    return { error: false };
   } catch (error) {
     console.log(error);
     return { error: true };

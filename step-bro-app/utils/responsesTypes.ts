@@ -22,6 +22,10 @@ export interface MyInformationResponse {
   readonly error: boolean;
 }
 
+export interface BasicResponse {
+  readonly status: number;
+}
+
 export interface MyStats {
   readonly stats?: WeekRecord[];
   readonly error: boolean;
