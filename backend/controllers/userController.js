@@ -42,7 +42,7 @@ const UserController = () => {
       return res.status(500).json({success:false, message:'Internal Server Error'});
     }
   };
-  
+
 
   const getUserByEmail = async (req, res) => {
     const userEmail = req.params.email;
@@ -136,7 +136,7 @@ const UserController = () => {
   const getMyLeagues = async (req, res) => {
     try {
       const email = req.get('token');
-      const result = await db.query('SELECT * FROM usersleagues WHERE user_mail = $1;', [email]);
+      const result = await db.query('SELECT * FROM leagues l INNER JOIN usersleagues ul ON l.league_id = ul.league_id WHERE ul.user_mail = $1;', [email]);
       return res.status(200).json({ success: true, leagues: result.rows});
     } catch (err) {
       console.error(err);
