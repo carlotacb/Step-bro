@@ -3,17 +3,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 
 import {
-
   StyleSheet,
-
   Text,
-
   View,
-
   ImageBackground,
-
   Dimensions,
-
 } from 'react-native';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -43,13 +37,9 @@ export default function HomeScreen() {
   const [PedometerAvailability, SetPedometerAvailability] = useState('');
   const maxSteps = 80;
   const [stepCount, setStepCount] = useState(0);
-  const name = '$';
 
   const chartConfig = {
-    backgroundGradientFrom: '#1E2923',
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: '#08130D',
-    backgroundGradientToOpacity: 0,
+    backgroundOpacity: 0,
     color: (opacity = 1) => `rgba(255, 0, 58, ${opacity})`,
     strokeWidth: 2, // optional, default 3
     barPercentage: 0.8,
@@ -66,14 +56,11 @@ export default function HomeScreen() {
     console.log('test');
     getUserStats(token).then((response) => {
       console.log(response);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      data.datasets = [{ data: [response.stats?.[0]?.steps ?? 0, response.stats?.[1]?.steps ?? 0, response.stats?.[2]?.steps ?? 0, response.stats?.[3]?.steps ?? 0, response.stats?.[4]?.steps ?? 0, response.stats?.[5]?.steps ?? 0, response.stats?.[6]?.steps ?? 0] }];
+
       // eslint-disable-next-line max-len
-      data.datasets = [{ data: [response.stats[0].steps, response.stats[1].steps, response.stats[2].steps, response.stats[3].steps, response.stats[4].steps, response.stats[5].steps, response.stats[6].steps] }];
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // eslint-disable-next-line max-len
-      data.labels = [response.stats[0].stats_day.toString(), response.stats[1].stats_day.toString(), response.stats[2].stats_day.toString(), response.stats[3].stats_day.toString(), response.stats[4].stats_day.toString(), response.stats[5].stats_day.toString(), response.stats[6].stats_day.toString()];
+      data.labels = [response.stats?.[0]?.stats_day?.toString() ?? '', response.stats?.[1]?.stats_day?.toString() ?? '', response.stats?.[2]?.stats_day?.toString() ?? '', response.stats?.[3]?.stats_day?.toString() ?? '', response.stats?.[4]?.stats_day?.toString() ?? '', response.stats?.[5]?.stats_day?.toString() ?? '', response.stats?.[6]?.stats_day?.toString() ?? ''];
     });
 
     getUserInformation(token).then((response) => {
@@ -81,10 +68,12 @@ export default function HomeScreen() {
       username = response.information?.username || '';
     });
   }
-  const ref = useRef(null);
+
+  const ref = useRef<number|null>(null);
+
   useEffect(() => {
     calculator();
-    ref.current = setInterval(sendSteps, 1 * 60 * 1000);
+    ref.current = setInterval(sendSteps, 5 * 60 * 1000);
 
     return () => {
       if (ref.current) {
@@ -131,9 +120,7 @@ export default function HomeScreen() {
         data={data}
         width={screenWidth}
         height={250}
-        yAxisLabel={name}
         chartConfig={chartConfig}
-        verticalLabelRotation={-20}
       />
     </View>
   );
@@ -148,7 +135,7 @@ const styles = StyleSheet.create({
   graphStyle: {
     flex: 1,
     justifyContent: 'center',
-    paddingRight: 25,
+    paddingLeft: '10%',
   },
   title: {
     fontSize: 20,
