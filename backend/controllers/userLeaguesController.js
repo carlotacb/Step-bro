@@ -110,7 +110,7 @@ const UserLeagueController = () => {
         const leagueId = req.params.league_id;
 
         // check if league exists
-        try {//TODO FIX THIS QUERY
+        try {
             const leagueResponse = await db.query('SELECT * FROM leagues WHERE league_id=$1', [leagueId]);
             if (leagueResponse.rows.length === 0) {
                 return res.status(404).json({success:false, message:'League not found'});
@@ -123,7 +123,7 @@ const UserLeagueController = () => {
 
         // get all users in league but in order of steps descending
         try {
-            const result = await db.query('SELECT users.username, stats.steps FROM stats INNER JOIN users ON stats.user_mail=users.user_mail WHERE stats.league_id=$1 ORDER BY stats.steps DESC', [leagueId]);
+            const result = await db.query('SELECT u.username, SUM(s.steps) AS total_steps FROM usersleagues ul INNER JOIN stats s ON ul.user_mail = s.user_mail INNER JOIN users u ON ul.user_mail = u.user_mail WHERE ul.league_id = $1 GROUP BY u.username ORDER BY total_steps DESC;', [leagueId]);
             return res.status(200).json({ success: true, message: result.rows });
         } catch (err) {
             console.error(err);
