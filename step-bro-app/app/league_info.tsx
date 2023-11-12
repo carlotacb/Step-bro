@@ -15,5 +15,7 @@ if (token === '') {
   }); */
 }
 export default function LeagueInfo() {
-
+  return (
+    <View />
+  );
 }
