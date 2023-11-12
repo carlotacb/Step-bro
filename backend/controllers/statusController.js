@@ -4,7 +4,7 @@ const tkn = require("./tokenController.js");
 
 const StatusController = () => {
     const getStatsDay = async (req, res) => {
-        const userMail = tkn.tokenToEmail(req.get('token'));
+        const userMail = await tkn.tokenToEmail(req.get('token'));
         
         // get all steps on stats from this specific day and user   
         
@@ -18,9 +18,7 @@ const StatusController = () => {
     }
 
     const getStatsWeek = async (req, res) => {
-        const userMail = tkn.tokenToEmail(req.get('token'));
-
-        
+        const userMail = await tkn.tokenToEmail(req.get('token'));
 
         // get all steps on stats from this specific day and user   
         try {
@@ -33,7 +31,7 @@ const StatusController = () => {
     }
 
     const updateStatsDay = async (req, res) => {
-        const userMail = tkn.tokenToEmail(req.get('token'));
+        const userMail = await tkn.tokenToEmail(req.get('token'));
         const steps = req.body.steps;
 
         // get day month and year

@@ -16,6 +16,7 @@ const statusController = StatusController();
 // Auth routes
 router.post('/login', authController.login);
 router.post('/register', authController.register);
+router.post('/logout', authController.closeSession);
 
 router.get('/profile', userController.getUserByToken);
 router.get('/myLeagues', userController.getMyLeagues);

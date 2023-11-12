@@ -21,7 +21,7 @@ const LeagueController = () => {
     */
 
     const createLeague = async (req, res) => {
-        const creator_mail = tkn.tokenToEmail(req.get('token'));
+        const creator_mail = await tkn.tokenToEmail(req.get('token'));
         const league_name = req.body.league_name;
         const start_date = req.body.start_date;
         const end_date = req.body.end_date;
@@ -48,7 +48,7 @@ const LeagueController = () => {
     }
 
     const getLeagueById = async (req, res) => {
-        const creator_mail = tkn.tokenToEmail(req.get('token'));
+        const creator_mail = await tkn.tokenToEmail(req.get('token'));
         const league_name = req.params.league_name;
         try {
             const result = await db.query('SELECT * FROM leagues WHERE creator_mail=$1 AND league_name=$2', [creator_mail, league_name]);
@@ -75,7 +75,7 @@ const LeagueController = () => {
 
     const updateLeague = async (req, res) => {
         const league_name = req.params.league_name;
-        const creator_mail = tkn.tokenToEmail(req.get('token'));
+        const creator_mail = await tkn.tokenToEmail(req.get('token'));
         let originalLeague;
         try {
             const leagueResponse = await db.query('SELECT * FROM leagues WHERE creator_mail=$1 AND league_name=$2', [creator_mail, league_name]);
@@ -105,7 +105,7 @@ const LeagueController = () => {
 
     const deleteLeague = async (req, res) => {
         const league_name = req.params.league_name;
-        const creator_mail = tkn.tokenToEmail(req.get('token'));
+        const creator_mail = await tkn.tokenToEmail(req.get('token'));
         try {
             await db.query('DELETE FROM leagues WHERE creator_mail=$1 AND league_name=$2', [creator_mail, league_name]);
             return res.status(204).send('League deleted');

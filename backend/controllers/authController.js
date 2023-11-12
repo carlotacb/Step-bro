@@ -14,7 +14,7 @@ const AuthController = () => {
                 if(result.rows.length === 0){
                     return res.status(401).json({success: false, message: 'Unauthorized'});
                 }
-                return res.status(200).json({success: true, token:generateToken(user_mail)});
+                return res.status(200).json({success: true, token: await generateToken(user_mail)});
             } catch (err) {
                 console.error(err);
                 return res.status(500).json('Couldn\'t login. Something went wrong.');
@@ -24,17 +24,27 @@ const AuthController = () => {
     const register = async (req, res) => { 
         const userController = UserController();
         const response = await userController.createUser(req, res);
-        console.log(response.body);
+        
         if(response.status === 201){
-            return res.status(200).json({success: true, token: generateToken(response.body.user_mail)});
+            return res.status(201); // SEE userController.createUser function, which returns overrites this line
         } else {    
             return res.status(500);
         }
     };
 
+    const closeSession = async (req, res) => {
+        const result = await revokeToken(req.get('token'));
+        if(result){
+          res.status(200).json({ success: true, message: 'Session closed and token revoked' });
+        } else {
+          res.status(400).json({ success: false, message: 'Session not closed and token not revoked'});
+        }
+      }
+
     return {
         login,
         register,
+        closeSession
     };
     
 }
