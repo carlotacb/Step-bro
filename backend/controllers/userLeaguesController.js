@@ -1,5 +1,7 @@
 const { json, raw} = require("express");
 const db = require("../db.js");
+const tkn = require("./tokenController.js");
+
 const e = require("express");
 require('dotenv').config()
 const autToken = process.env.AUTHTOKEN
@@ -9,7 +11,7 @@ const auth = Buffer.from(autToken).toString("base64");
 const UserLeagueController = () => {
 
     const inviteLeague = async (req, res) => {
-        const userMail = req.get('token');
+        const userMail = tkn.tokenToEmail(req.get('token'));
         const leagueId = req.body.league_id;
         const phoneNumber = req.body.phone_number;
 
@@ -70,7 +72,7 @@ const UserLeagueController = () => {
     }
 
     const leaveLeague = async (req, res) => {
-        const userMail = req.get('token');
+        const userMail = tkn.tokenToEmail(req.get('token'));
         const leagueId = req.body.league_id;
 
         // check if user and league exist and is in league

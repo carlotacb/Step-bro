@@ -1,7 +1,8 @@
+const db = require("../db.js");
+const { generateToken } = require("./tokenController.js");
+
 const {UserController} = require("./userController");
 
-
-const db = require("../db.js");
 
 const AuthController = () => {
     const login =
@@ -13,10 +14,10 @@ const AuthController = () => {
                 if(result.rows.length === 0){
                     return res.status(401).json({success: false, message: 'Unauthorized'});
                 }
-                return res.status(200).json({success: true, user_mail:result.rows[0]['user_mail']});
+                return res.status(200).json({success: true, token:generateToken(user_mail)});
             } catch (err) {
                 console.error(err);
-                return res.status(500).json('Internal Server Error');
+                return res.status(500).json('Couldn\'t login. Something went wrong.');
             }
         };
 
@@ -25,7 +26,7 @@ const AuthController = () => {
         const response = await userController.createUser(req, res);
         console.log(response.body);
         if(response.status === 201){
-            return res.status(200).json({success: true, token: response.body.user_mail});
+            return res.status(200).json({success: true, token: generateToken(response.body.user_mail)});
         } else {    
             return res.status(500);
         }
