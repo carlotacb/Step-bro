@@ -8,7 +8,7 @@ import {
   MyInformationResponse,
   MyStats,
   BasicResponse,
-  MyLeagueResponse,
+  MyLeagueResponse, CreationLeagueResponse,
 } from './responsesTypes';
 
 const baseURL = 'http://185.26.49.230:8080/api';
@@ -152,5 +152,41 @@ export async function sendSteps(token:string, steps:number): Promise<BasicRespon
   } catch (error) {
     console.log(error);
     return { error: true };
+  }
+}
+
+export async function createLeague(
+  token: string,
+  leagueName: string,
+  startDate: string,
+  endDate: string,
+  description: string,
+): Promise<CreationLeagueResponse> {
+  let userMail = '';
+  getUserInformation(token).then(
+    (response) => { userMail = response.information?.user_mail || ''; },
+  );
+
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `${baseURL}/leagues`,
+      headers: {
+        token,
+      },
+      data: {
+        creator_mail: userMail,
+        leagueName,
+        startDate,
+        endDate,
+        description,
+      },
+    });
+
+    console.log(response.data);
+    return { league_id: response.data.league_id, error: false };
+  } catch (error) {
+    console.log(error);
+    return { league_id: '', error: true };
   }
 }

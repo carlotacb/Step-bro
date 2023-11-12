@@ -26,6 +26,11 @@ export interface BasicResponse {
   readonly status: number;
 }
 
+export interface CreationLeagueResponse {
+  readonly league_id: string;
+  readonly error: boolean;
+}
+
 export interface MyStats {
   readonly stats?: WeekRecord[];
   readonly error: boolean;
