@@ -2,7 +2,13 @@
 import axios from 'axios';
 import md5 from 'md5';
 import {
-  LoginBody, LoginOrRegisterResponse, RegisterBody, MyInformationResponse, MyStats, BasicResponse,
+  LoginBody,
+  LoginOrRegisterResponse,
+  RegisterBody,
+  MyInformationResponse,
+  MyStats,
+  BasicResponse,
+  MyLeagueResponse,
 } from './responsesTypes';
 
 const baseURL = 'http://185.26.49.230:8080/api';
@@ -90,6 +96,22 @@ export async function updateUserInformation(
     });
     return { information: { ...response.data.user }, error: false };
   } catch (error) {
+    return { error: true };
+  }
+}
+
+export async function getMyLeagues(token: string): Promise<MyLeagueResponse> {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseURL}/myLeagues`,
+      headers: {
+        token,
+      },
+    });
+    return { list: { ...response.data.leagues }, error: false };
+  } catch (error) {
+    console.log(error);
     return { error: true };
   }
 }

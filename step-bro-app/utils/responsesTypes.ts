@@ -42,3 +42,13 @@ export interface MyInformation {
   readonly bio?: string | null;
   readonly icon?: string | null;
 }
+
+export interface MyLeagueResponse {
+  readonly list?: LeaguesList[];
+  readonly error: boolean;
+}
+
+export interface LeaguesList {
+  readonly league_id: number;
+  readonly league_name: string;
+}

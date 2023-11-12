@@ -12,15 +12,18 @@ let initialUsername = '';
 let email = '';
 let phoneNumber = '';
 let initialBio = '';
+let loadingScreen = false;
 
 if (token === '') {
   router.replace('/login');
 } else {
+  loadingScreen = true;
   getUserInformation(token).then((response) => {
     initialUsername = response.information?.username || '';
     email = response.information?.user_mail || '';
     phoneNumber = response.information?.phone_number || '';
     initialBio = response.information?.bio || '';
+    loadingScreen = false;
   });
 }
 
@@ -53,80 +56,86 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>
-          Update your profile
-        </Text>
-      </View>
-      <View style={styles.formContainer}>
-        <Input
-          selectionColor="#79AF6C"
-          underlineColor="transparent"
-          mode="outlined"
-          disabled
-          label="Email"
-          enterKeyHint="next"
-          value={email}
-        />
-        <Input
-          selectionColor="#79AF6C"
-          underlineColor="transparent"
-          mode="outlined"
-          disabled
-          label="Phone number"
-          enterKeyHint="next"
-          value={phoneNumber}
-        />
-        <Input
-          selectionColor="#79AF6C"
-          underlineColor="transparent"
-          mode="outlined"
-          label="Username"
-          enterKeyHint="next"
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-          autoCapitalize="none"
-          textContentType="username"
-        />
-        <Input
-          selectionColor="#79AF6C"
-          underlineColor="transparent"
-          mode="outlined"
-          label="Biography"
-          enterKeyHint="next"
-          value={bio}
-          onChangeText={(text) => setBio(text)}
-          autoCapitalize="none"
-          multiline
-          numberOfLines={5}
-        />
-        <View
-          style={{
-            marginTop: 15, display: 'flex', flexDirection: 'row', justifyContent: 'space-between',
-          }}
-        >
-          <Button
-            mode="elevated"
-            onPress={() => updateProfile()}
-            buttonColor="#79AF6C"
-            textColor="#FFFFFF"
-            style={{ width: '46%' }}
-            loading={loading}
-          >
-            {loading ? 'Loading...' : 'Confirm changes' }
-          </Button>
-          <Button
-            mode="elevated"
-            onPress={() => logout()}
-            buttonColor="#C96568"
-            textColor="#FFFFFF"
-            style={{ width: '46%' }}
-            loading={loading}
-          >
-            Log out
-          </Button>
-        </View>
-      </View>
+      {loadingScreen
+        ? <Text>Loading...</Text>
+        : (
+          <>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>
+                Update your profile
+              </Text>
+            </View>
+            <View style={styles.formContainer}>
+              <Input
+                selectionColor="#79AF6C"
+                underlineColor="transparent"
+                mode="outlined"
+                disabled
+                label="Email"
+                enterKeyHint="next"
+                value={email}
+              />
+              <Input
+                selectionColor="#79AF6C"
+                underlineColor="transparent"
+                mode="outlined"
+                disabled
+                label="Phone number"
+                enterKeyHint="next"
+                value={phoneNumber}
+              />
+              <Input
+                selectionColor="#79AF6C"
+                underlineColor="transparent"
+                mode="outlined"
+                label="Username"
+                enterKeyHint="next"
+                value={username}
+                onChangeText={(text) => setUsername(text)}
+                autoCapitalize="none"
+                textContentType="username"
+              />
+              <Input
+                selectionColor="#79AF6C"
+                underlineColor="transparent"
+                mode="outlined"
+                label="Biography"
+                enterKeyHint="next"
+                value={bio}
+                onChangeText={(text) => setBio(text)}
+                autoCapitalize="none"
+                multiline
+                numberOfLines={5}
+              />
+              <View
+                style={{
+                  marginTop: 15, display: 'flex', flexDirection: 'row', justifyContent: 'space-between',
+                }}
+              >
+                <Button
+                  mode="elevated"
+                  onPress={() => updateProfile()}
+                  buttonColor="#79AF6C"
+                  textColor="#FFFFFF"
+                  style={{ width: '46%' }}
+                  loading={loading}
+                >
+                  {loading ? 'Loading...' : 'Confirm changes' }
+                </Button>
+                <Button
+                  mode="elevated"
+                  onPress={() => logout()}
+                  buttonColor="#C96568"
+                  textColor="#FFFFFF"
+                  style={{ width: '46%' }}
+                  loading={loading}
+                >
+                  Log out
+                </Button>
+              </View>
+            </View>
+          </>
+        )}
     </View>
   );
 }
