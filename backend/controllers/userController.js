@@ -137,6 +137,25 @@ const UserController = () => {
     try {
       const email = req.get('token');
       const result = await db.query('SELECT * FROM leagues l INNER JOIN usersleagues ul ON l.league_id = ul.league_id WHERE ul.user_mail = $1;', [email]);
+      
+      // Edit the resulting rows so that the date is YYYY-MM-DD instead of timestamp
+      for (let i = 0; i < result.rows.length; i++) {
+        const start_date = result.rows[i].start_date;
+        result.rows[i].start_date = start_date.toISOString().split('T')[0];
+        const end_date = result.rows[i].end_date;
+        result.rows[i].end_date = end_date.toISOString().split('T')[0];
+        const result2 = await db.query('SELECT u.user_mail, SUM(s.steps) AS total_steps FROM usersleagues ul INNER JOIN stats s ON ul.user_mail = s.user_mail INNER JOIN users u ON ul.user_mail = u.user_mail WHERE ul.league_id = $1 GROUP BY u.username ORDER BY total_steps DESC;', [result.rows[i].league_id]);
+        // Iterate through the result and add the position of the user in the league
+        let position = 1;
+        for (let j = 0; j < result2.rows.length; j++) {
+          position++;
+          if(result2.rows[j].user_mail == result.rows[i].user_mail){
+            result.rows[i].ranking = position;
+          }
+        }
+        
+      }
+
       return res.status(200).json({ success: true, leagues: result.rows});
     } catch (err) {
       console.error(err);
