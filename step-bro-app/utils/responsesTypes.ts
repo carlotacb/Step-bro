@@ -23,7 +23,7 @@ export interface MyInformationResponse {
 }
 
 export interface BasicResponse {
-  readonly status: number;
+  readonly error: boolean;
 }
 
 export interface CreationLeagueResponse {

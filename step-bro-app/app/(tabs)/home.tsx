@@ -1,23 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-
-import { StatusBar } from 'expo-status-bar';
-
 import {
   StyleSheet,
   Text,
   View,
-  ImageBackground,
   Dimensions,
 } from 'react-native';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
-  LineChart,
   BarChart,
-  PieChart,
   ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
 } from 'react-native-chart-kit';
 
 import { Pedometer } from 'expo-sensors';
@@ -33,17 +25,13 @@ const data = {
     },
   ],
 };
-
-const token = getToken();
+let token = '';
+getToken().then((response) => { token = response; });
 let username = '';
-console.log(token);
 if (token === '') {
-  // router.replace('/login');
+  router.replace('/login');
 } else {
-  console.log('test');
   getUserStats(token).then((response) => {
-    console.log(response);
-
     // eslint-disable-next-line max-len
     data.datasets = [{ data: [response.stats?.[0]?.steps ?? 0, response.stats?.[1]?.steps ?? 0, response.stats?.[2]?.steps ?? 0, response.stats?.[3]?.steps ?? 0, response.stats?.[4]?.steps ?? 0, response.stats?.[5]?.steps ?? 0, response.stats?.[6]?.steps ?? 0] }];
 
@@ -52,13 +40,11 @@ if (token === '') {
   });
 
   getUserInformation(token).then((response) => {
-    console.log(response);
     username = response.information?.username || '';
   });
 }
 
 export default function HomeScreen() {
-  const [PedometerAvailability, SetPedometerAvailability] = useState('');
   const maxSteps = 80;
   const [stepCount, setStepCount] = useState(0);
 
@@ -91,17 +77,6 @@ export default function HomeScreen() {
     const calculed = Pedometer.watchStepCount((result) => {
       setStepCount(result.steps);
     });
-    Pedometer.isAvailableAsync().then(
-
-      (result) => {
-        SetPedometerAvailability(String(result));
-      },
-
-      (error) => {
-        SetPedometerAvailability(error);
-      },
-
-    );
   };
 
   return (

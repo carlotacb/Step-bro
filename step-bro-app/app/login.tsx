@@ -24,11 +24,9 @@ export default function LoginScreen() {
         setErrorText('');
         setLoadingLogin(false);
         if (Platform.OS === 'web') {
-          console.log(response.token);
           localStorage.setItem('userToken', response.token || '');
         } else {
-          console.log(response.token);
-          SecureStore.setItem('userToken', response.token || '');
+          SecureStore.setItemAsync('userToken', response.token || '');
         }
         return router.replace('/home');
       }

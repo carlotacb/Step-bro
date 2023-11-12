@@ -8,51 +8,30 @@ import { LeaguesList } from '../../utils/responsesTypes';
 
 const token = getToken();
 let list: LeaguesList[] = [];
-const emptyList = false;
-const loadingScreen = false;
+let emptyList = false;
+let loadingScreen = false;
 
 if (token === '') {
   router.replace('/login');
 } else {
-  /* loadingScreen = true;
+  loadingScreen = true;
   getMyLeagues(getToken()).then((response) => {
-    console.log(response);
-    console.log(response.list);
-    console.log(response.list?.length);
     if (
       !response.error
       || (response.list === undefined || response.list === null)
       || response.list?.length === undefined
     ) {
-      list = response.list || [
-        { league_id: 1, league_name: 'League 1' },
-        { league_id: 2, league_name: 'League 2' },
-        { league_id: 3, league_name: 'League 3' },
-        { league_id: 4, league_name: 'League 4' },
-        { league_id: 5, league_name: 'League 5' },
-      ];
+      list = response.list || [];
       emptyList = false;
       if (list.length === undefined || list.length === 0) {
         emptyList = true;
       }
     } else {
-      list = [
-        { league_id: 1, league_name: 'League 1' },
-        { league_id: 2, league_name: 'League 2' },
-        { league_id: 3, league_name: 'League 3' },
-        { league_id: 4, league_name: 'League 4' },
-        { league_id: 5, league_name: 'League 5' },
-      ];
+      list = [];
     }
     loadingScreen = false;
-  }); */
-  list = [
-    { league_id: 1, league_name: 'League 1' },
-    { league_id: 2, league_name: 'League 2' },
-    { league_id: 3, league_name: 'League 3' },
-    { league_id: 4, league_name: 'League 4' },
-    { league_id: 5, league_name: 'League 5' },
-  ];
+  });
+  list = [];
 }
 
 export default function MyLeaguesScreen() {
