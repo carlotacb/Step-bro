@@ -66,7 +66,7 @@ export default function HomeScreen() {
     backgroundGradientFrom: '#1E2923',
     backgroundGradientFromOpacity: 0,
     backgroundGradientTo: '#08130D',
-    backgroundGradientToOpacity: 0.5,
+    backgroundGradientToOpacity: 0.8,
     color: (opacity = 1) => `rgba(255, 0, 58, ${opacity})`,
     strokeWidth: 2, // optional, default 3
     barPercentage: 0.8,
@@ -110,6 +110,8 @@ export default function HomeScreen() {
         Welcome
         {' '}
         {username}
+        {'\n'}
+        This are your daily steps
       </Text>
       <ProgressChart
         data={[stepCount / maxSteps]}
@@ -144,10 +146,18 @@ const styles = StyleSheet.create({
   graphStyle: {
     flex: 1,
     justifyContent: 'center',
-    marginTop: '25%',
+    marginTop: '20%',
+    // alignSelf: 'auto',
   },
   title: {
+    backgroundGradientFrom: '#1E2923',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#08130D',
+    backgroundGradientToOpacity: 0.8,
+    marginVertical: '2%',
+    textAlign: 'center',
     fontSize: 20,
+    fontStyle: 'normal',
     color: '#fff',
     fontWeight: 'bold',
   },
