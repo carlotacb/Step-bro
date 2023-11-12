@@ -25,8 +25,8 @@ const data = {
     },
   ],
 };
-
-const token = await getToken();
+let token = '';
+getToken().then((response) => { token = response; });
 let username = '';
 if (token === '') {
   router.replace('/login');
