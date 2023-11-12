@@ -1,4 +1,5 @@
 const db = require("../db.js");
+const tkn = require("./tokenController.js");
 
 const UserController = () => {
 
@@ -60,7 +61,7 @@ const UserController = () => {
   };
 
   const getUserByToken = async (req, res) => {
-    const token = req.get('token');
+    const token = tkn.tokenToEmail(req.get('token'));
     console.log(token);
     try {
       const result = await db.query('SELECT user_mail,phone_number,username,bio,icon,creation_date,lastupdate_date FROM users WHERE users.user_mail=$1', [token]);
@@ -81,7 +82,7 @@ const UserController = () => {
 
   const updateUser = async (req, res) => {
     try {
-      const email = req.get('token');
+      const email = tkn.tokenToEmail(req.get('token'));
       let originalUser;
       try {
         const userResponse = await db.query('SELECT * FROM users WHERE user_mail=$1', [email]);
@@ -112,7 +113,7 @@ const UserController = () => {
 
   const deleteUser = async (req, res) => {
     try {
-      const email = req.get('token');
+      const email = tkn.tokenToEmail(req.get('token'));
       const result = await db.query('DELETE FROM users WHERE user_mail = $1;', [email]);
       return res.status(204).json({ success: true});
     } catch (err) {
@@ -134,7 +135,7 @@ const UserController = () => {
 
   const getMyLeagues = async (req, res) => {
     try {
-      const email = req.get('token');
+      const email = tkn.tokenToEmail(req.get('token'));
       const result = await db.query('SELECT * FROM usersleagues WHERE user_mail = $1;', [email]);
       return res.status(200).json({ success: true, leagues: result.rows});
     } catch (err) {
