@@ -6,12 +6,14 @@ const {AuthController} = require('./controllers/authController');
 const {LeagueController} = require('./controllers/leagueController');
 const {UserLeagueController} = require('./controllers/userLeaguesController');
 const {StatusController} = require('./controllers/statusController');
+const {ImageController} = require('./controllers/imageController')
 
 const userController = UserController();
 const authController = AuthController();
 const leagueController = LeagueController();
 const userLeagueController = UserLeagueController();
 const statusController = StatusController();
+const imageController = ImageController();
 
 // Auth routes
 router.post('/login', authController.login);
@@ -44,6 +46,11 @@ router.get('/ranking/:league_id', userLeagueController.rankingOfLeague);
 router.get('/stats/day', statusController.getStatsDay);
 router.get('/stats/week', statusController.getStatsWeek);
 router.post('/stats', statusController.updateStatsDay);
+
+// images
+router.post('/users/upload', imageController.handleUserImageUpload);
+router.post('/leagues/upload', imageController.handleLeagueImageUpload);
+router.get('/image/:filename', imageController.handleImageRetrieval);
 
 
 module.exports = router;
