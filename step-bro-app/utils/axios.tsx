@@ -168,7 +168,7 @@ export async function createLeague(
   );
 
   try {
-      const response = await axios({
+    const response = await axios({
       method: 'post',
       url: `${baseURL}/leagues`,
       headers: {

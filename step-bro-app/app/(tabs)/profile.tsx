@@ -66,21 +66,24 @@ export default function ProfileScreen() {
               </Text>
             </View>
             <View style={styles.formContainer}>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <Input
+                label={<Text style={styles.label}>Email</Text>}
                 selectionColor="#79AF6C"
                 underlineColor="transparent"
                 mode="outlined"
                 disabled
-                label="Email"
                 enterKeyHint="next"
                 value={email}
+
               />
+
               <Input
                 selectionColor="#79AF6C"
                 underlineColor="transparent"
                 mode="outlined"
                 disabled
-                label="Phone number"
+                label={<Text style={styles.label}>Phone Number</Text>}
                 enterKeyHint="next"
                 value={phoneNumber}
               />
@@ -88,7 +91,7 @@ export default function ProfileScreen() {
                 selectionColor="#79AF6C"
                 underlineColor="transparent"
                 mode="outlined"
-                label="Username"
+                label={<Text style={styles.label}>Username</Text>}
                 enterKeyHint="next"
                 value={username}
                 onChangeText={(text) => setUsername(text)}
@@ -99,7 +102,7 @@ export default function ProfileScreen() {
                 selectionColor="#79AF6C"
                 underlineColor="transparent"
                 mode="outlined"
-                label="Biography"
+                label={<Text style={styles.label}>Biography</Text>}
                 enterKeyHint="next"
                 value={bio}
                 onChangeText={(text) => setBio(text)}
@@ -165,5 +168,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 20,
+  },
+  label: {
+    // backgroundColor: 'black', // Same color as background
+    color: '#000',
+    fontSize: 20,
+    backgroundColor: '#fff',
   },
 });

@@ -44,7 +44,7 @@ export default function LoginScreen() {
           selectionColor="#79AF6C"
           underlineColor="transparent"
           mode="outlined"
-          label="Email"
+          label={<Text style={styles.label}>Email</Text>}
           enterKeyHint="next"
           value={username}
           onChangeText={(text) => setUsername(text)}
@@ -56,7 +56,7 @@ export default function LoginScreen() {
           selectionColor="#79AF6C"
           underlineColor="transparent"
           mode="outlined"
-          label="Password"
+          label={<Text style={styles.label}>Password</Text>}
           enterKeyHint="next"
           value={password}
           onChangeText={(text) => setPassword(text)}
@@ -117,5 +117,11 @@ const styles = StyleSheet.create({
   signUpButton: {
     fontWeight: 'bold',
     color: '#79AF6C',
+  },
+  label: {
+    // backgroundColor: 'black', // Same color as background
+    color: '#000',
+    fontSize: 20,
+    backgroundColor: '#fff',
   },
 });

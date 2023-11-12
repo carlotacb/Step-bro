@@ -80,7 +80,7 @@ export default function MyLeaguesScreen() {
                 <>
                   {list.map((league) => (
                     <View key={league.league_name} style={styles.leagueContainer}>
-                      <Link href="/league_info" asChild>
+                      <Link href={`/league_info/${league.league_id.toString()}`} asChild>
                         <Button
                           mode="text"
                           onPress={() => null}
