@@ -1,8 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Button, TextInput as Input } from 'react-native-paper';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Text, View } from '../components/Themed';
 import { createLeague } from '../utils/axios';
@@ -48,7 +47,7 @@ export default function ModalScreen() {
           selectionColor="#79AF6C"
           underlineColor="transparent"
           mode="outlined"
-          label="Start date"
+          label="Start date (YYYY-MM-DD)"
           enterKeyHint="next"
           value={startDate}
           onChangeText={(text) => setStartDate(text)}
@@ -59,7 +58,7 @@ export default function ModalScreen() {
           selectionColor="#79AF6C"
           underlineColor="transparent"
           mode="outlined"
-          label="End date"
+          label="End date (YYYY-MM-DD)"
           enterKeyHint="next"
           value={endDate}
           onChangeText={(text) => setEndDate(text)}

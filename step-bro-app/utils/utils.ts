@@ -5,5 +5,5 @@ export function getToken(): string {
   if (Platform.OS === 'web') {
     return localStorage.getItem('userToken') || '';
   }
-  return SecureStore.getItem('userToken') || '';
+  return SecureStore.getItemAsync('userToken') || '';
 }

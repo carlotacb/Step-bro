@@ -36,14 +36,10 @@ const data = {
 
 const token = getToken();
 let username = '';
-console.log(token);
 if (token === '') {
   // router.replace('/login');
 } else {
-  console.log('test');
   getUserStats(token).then((response) => {
-    console.log(response);
-
     // eslint-disable-next-line max-len
     data.datasets = [{ data: [response.stats?.[0]?.steps ?? 0, response.stats?.[1]?.steps ?? 0, response.stats?.[2]?.steps ?? 0, response.stats?.[3]?.steps ?? 0, response.stats?.[4]?.steps ?? 0, response.stats?.[5]?.steps ?? 0, response.stats?.[6]?.steps ?? 0] }];
 
@@ -52,7 +48,6 @@ if (token === '') {
   });
 
   getUserInformation(token).then((response) => {
-    console.log(response);
     username = response.information?.username || '';
   });
 }
@@ -146,7 +141,7 @@ const styles = StyleSheet.create({
   graphStyle: {
     flex: 1,
     justifyContent: 'center',
-    marginTop: '20%',
+    marginTop: 300,
     // alignSelf: 'auto',
   },
   title: {

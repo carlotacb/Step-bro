@@ -67,9 +67,7 @@ export async function getUserInformation(token: string): Promise<MyInformationRe
     const response = await axios({
       method: 'get',
       url: `${baseURL}/profile`,
-      headers: {
-        token,
-      },
+      headers: { token },
     });
     return { information: { ...response.data.user }, error: false };
   } catch (error) {
@@ -86,9 +84,7 @@ export async function updateUserInformation(
     const response = await axios({
       method: 'put',
       url: `${baseURL}/users`,
-      headers: {
-        token,
-      },
+      headers: { token },
       data: {
         bio,
         username,
@@ -105,10 +101,9 @@ export async function getMyLeagues(token: string): Promise<MyLeagueResponse> {
     const response = await axios({
       method: 'get',
       url: `${baseURL}/myLeagues`,
-      headers: {
-        token,
-      },
+      headers: { token },
     });
+    console.log(response.data);
     return { list: { ...response.data.leagues }, error: false };
   } catch (error) {
     console.log(error);
@@ -126,66 +121,54 @@ export async function getUserStats(token: string): Promise<MyStats> {
       },
     });
 
-    console.log(response.data.user);
     return { stats: { ...response.data.message }, error: false };
   } catch (error) {
-    console.log(error);
     return { error: true };
   }
 }
 
-export async function sendSteps(token:string, steps:number): Promise<BasicResponse> {
+export async function sendSteps(token: string, steps: number): Promise<BasicResponse> {
   try {
-    const response = await axios({
+    await axios({
       method: 'post',
       url: `${baseURL}/stats`,
-      headers: {
-        token,
-      },
-      data: {
-        steps,
-      },
+      headers: { token },
+      data: { steps },
     });
 
-    console.log(response.data.user);
     return { error: false };
   } catch (error) {
-    console.log(error);
     return { error: true };
   }
 }
 
 export async function createLeague(
   token: string,
-  league_name: string,
-  start_date: string,
-  end_date: string,
+  leagueName: string,
+  startDate: string,
+  endDate: string,
   description: string,
-): Promise<CreationLeagueResponse> {
+): Promise<BasicResponse> {
   let userMail = '';
   getUserInformation(token).then(
     (response) => { userMail = response.information?.user_mail || ''; },
   );
-
   try {
-      const response = await axios({
+    const response = await axios({
       method: 'post',
       url: `${baseURL}/leagues`,
-      headers: {
-        token,
-      },
+      headers: { token },
       data: {
-        league_name,
-        start_date,
-        end_date,
+        creator_mail: userMail,
+        league_name: leagueName,
+        start_date: startDate,
+        end_date: endDate,
         description,
       },
     });
-
     console.log(response.data);
-    return { league_id: response.data.league_id, error: false };
+    return { error: false };
   } catch (error) {
-    console.log(error);
-    return { league_id: '', error: true };
+    return { error: true };
   }
 }
