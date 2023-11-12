@@ -38,10 +38,9 @@ const LeagueController = () => {
         // create it if not exists
         try {
             const result = await db.query('INSERT INTO leagues (league_name, start_date, end_date, description, icon, creator_mail) VALUES ($1, $2, $3, $4, $5, $6)', [league_name, start_date, end_date, description, icon, creator_mail]);
+            const leagueId = await db.query('SELECT league_id FROM leagues WHERE league_name = $1 AND creator_mail = $2', [league_name, creator_mail])
+            const result2 = await db.query('INSERT INTO usersleagues (user_mail, league_id) VALUES($1, $2);', [creator_mail, leagueId]);
             return res.status(201).send({success:true, message:result.rows[0]});
-
-            const result2 = await db.query('INSERT INTO usersleagues (user_mail, league_id) VALUES($1, $2);', [creator_mail, result.rows[0].league_id]);
-            return res.status(200).json({ success: true });
         } catch (err) {
             console.error(err);
             return res.status(500).json({success:false, message:'Internal Server Error'});
