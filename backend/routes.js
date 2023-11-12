@@ -18,7 +18,8 @@ router.post('/login', authController.login);
 router.post('/register', authController.register);
 
 router.get('/profile', userController.getUserByToken);
-router.get('/myLeagues', userController.getMyLeagues)
+router.get('/myLeagues', userController.getMyLeagues);
+router.get('/myLeagues/:league_id', userController.getLeagueById);
 
 router.get('/users/:email', userController.getUserByEmail);
 router.put('/users/', userController.updateUser);
@@ -37,6 +38,7 @@ router.delete('/leagues/:creator_mail&:league_name', leagueController.deleteLeag
 // UserLeagues routes
 router.post('/userleague', userLeagueController.inviteLeague);
 router.delete('/userleague', userLeagueController.leaveLeague);
+router.get('/ranking/:league_id', userLeagueController.rankingOfLeague);
 
 // stats routes
 router.get('/stats/day', statusController.getStatsDay);

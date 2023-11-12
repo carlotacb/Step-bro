@@ -104,6 +104,39 @@ const UserLeagueController = () => {
 
     };
 
+
+    const rankingOfLeague = async (req, res) => {
+        // get league name from url params  
+        const leagueId = req.params.league_id;
+
+        // check if league exists
+        try {
+            const leagueResponse = await db.query('SELECT * FROM leagues WHERE league_id=$1', [leagueId]);
+            if (leagueResponse.rows.length === 0) {
+                return res.status(404).json({success:false, message:'League not found'});
+            }
+        }
+        catch (err) {
+            console.error(err);
+            return res.status(500).json({success:false, message:'Failed checking if league exists'});
+        }
+
+        // get all users in league but in order of steps descending
+        try {
+            const result = await db.query('SELECT u.username, SUM(s.steps) AS total_steps FROM usersleagues ul INNER JOIN stats s ON ul.user_mail = s.user_mail INNER JOIN users u ON ul.user_mail = u.user_mail WHERE ul.league_id = $1 GROUP BY u.username ORDER BY total_steps DESC;', [leagueId]);
+            // Iterate through the result and add the position of the user in the league
+            let position = 1;
+            for (let i = 0; i < result.rows.length; i++) {
+                result.rows[i].position = position;
+                position++;
+            }
+            return res.status(200).json({ success: true, message: result.rows });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Failed retrieving the ranking' });
+        }
+    }
+
     const getLeagueName = async (leagueId) => {
         let result = await db.query('SELECT league_name FROM leagues WHERE league_id = $1', [leagueId])
         return result.rows[0].league_name
@@ -143,6 +176,7 @@ const UserLeagueController = () => {
     return {
         inviteLeague,
         leaveLeague,
+        rankingOfLeague,
     };
     
 }

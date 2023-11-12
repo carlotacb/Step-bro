@@ -35,7 +35,7 @@ const StatusController = () => {
         const steps = req.body.steps;
 
         // get day month and year
-        const date = new Date();
+        const date = new Date(); 
         const year = date.getFullYear();
         const month = date.getMonth();
         const day = date.getDate();
