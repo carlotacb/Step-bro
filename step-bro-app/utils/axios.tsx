@@ -154,7 +154,7 @@ export async function createLeague(
     (response) => { userMail = response.information?.user_mail || ''; },
   );
   try {
-    const response = await axios({
+    await axios({
       method: 'post',
       url: `${baseURL}/leagues`,
       headers: { token },
@@ -166,7 +166,6 @@ export async function createLeague(
         description,
       },
     });
-    console.log(response.data);
     return { error: false };
   } catch (error) {
     return { error: true };
