@@ -11,7 +11,7 @@ const auth = Buffer.from(autToken).toString("base64");
 const UserLeagueController = () => {
 
     const inviteLeague = async (req, res) => {
-        const userMail = tkn.tokenToEmail(req.get('token'));
+        const userMail = await tkn.tokenToEmail(req.get('token'));
         const leagueId = req.body.league_id;
         const phoneNumber = req.body.phone_number;
 
@@ -72,7 +72,7 @@ const UserLeagueController = () => {
     }
 
     const leaveLeague = async (req, res) => {
-        const userMail = tkn.tokenToEmail(req.get('token'));
+        const userMail = await tkn.tokenToEmail(req.get('token'));
         const leagueId = req.body.league_id;
 
         // check if user and league exist and is in league
