@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   graphStyle: {
     flex: 1,
     justifyContent: 'center',
-    marginTop: '20%',
+    marginTop: 300,
     // alignSelf: 'auto',
   },
   title: {
