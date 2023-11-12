@@ -51,12 +51,13 @@ export default function HomeScreen() {
   let username = '';
   console.log(token);
   if (token === '') {
-    // router.replace('/login');
+    //router.replace('/login');
   } else {
     console.log('test');
     getUserStats(token).then((response) => {
       console.log(response);
 
+      // eslint-disable-next-line max-len
       data.datasets = [{ data: [response.stats?.[0]?.steps ?? 0, response.stats?.[1]?.steps ?? 0, response.stats?.[2]?.steps ?? 0, response.stats?.[3]?.steps ?? 0, response.stats?.[4]?.steps ?? 0, response.stats?.[5]?.steps ?? 0, response.stats?.[6]?.steps ?? 0] }];
 
       // eslint-disable-next-line max-len
@@ -105,7 +106,6 @@ export default function HomeScreen() {
         {' '}
         {username}
       </Text>
-      <View />
       <ProgressChart
         data={[stepCount / maxSteps]}
         width={screenWidth}
@@ -115,12 +115,16 @@ export default function HomeScreen() {
         chartConfig={chartConfig}
         hideLegend
       />
+      <Text style={styles.step}>
+        {stepCount}
+      </Text>
       <BarChart
         style={styles.graphStyle}
         data={data}
         width={screenWidth}
         height={250}
         chartConfig={chartConfig}
+        fromZero
       />
     </View>
   );
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
   graphStyle: {
     flex: 1,
     justifyContent: 'center',
-    paddingLeft: '10%',
+    //paddingTop: '15%',
   },
   title: {
     fontSize: 20,
@@ -153,5 +157,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
+  },
+  step: {
+    fontSize: 20,
+    color: '#fff',
+    marginVertical: -165,
   },
 });
