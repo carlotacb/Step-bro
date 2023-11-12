@@ -19,7 +19,7 @@ export default function ModalScreen() {
     setLoadingCreateLeague(true);
     createLeague(getToken(), leagueName, startDate, endDate, description).then((response) => {
       if (response.error) {
-        setErrorText('There is an error... The email already exists!');
+        setErrorText('There is an error creating the leagues!');
         setLoadingCreateLeague(false);
       } else {
         setErrorText('');

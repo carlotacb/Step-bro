@@ -157,9 +157,9 @@ export async function sendSteps(token:string, steps:number): Promise<BasicRespon
 
 export async function createLeague(
   token: string,
-  leagueName: string,
-  startDate: string,
-  endDate: string,
+  league_name: string,
+  start_date: string,
+  end_date: string,
   description: string,
 ): Promise<CreationLeagueResponse> {
   let userMail = '';
@@ -168,17 +168,16 @@ export async function createLeague(
   );
 
   try {
-    const response = await axios({
+      const response = await axios({
       method: 'post',
       url: `${baseURL}/leagues`,
       headers: {
         token,
       },
       data: {
-        creator_mail: userMail,
-        leagueName,
-        startDate,
-        endDate,
+        league_name,
+        start_date,
+        end_date,
         description,
       },
     });
