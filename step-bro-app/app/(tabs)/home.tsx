@@ -1,24 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-
-import { StatusBar } from 'expo-status-bar';
-
 import {
   StyleSheet,
   Text,
   View,
-  ImageBackground,
   Dimensions,
   LogBox,
 } from 'react-native';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
-  LineChart,
   BarChart,
-  PieChart,
   ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
 } from 'react-native-chart-kit';
 
 import { Pedometer } from 'expo-sensors';
@@ -34,11 +26,11 @@ const data = {
     },
   ],
 };
-
-const token = getToken();
+let token = '';
+getToken().then((response) => { token = response; });
 let username = '';
 if (token === '') {
-  // router.replace('/login');
+  router.replace('/login');
 } else {
   getUserStats(token).then((response) => {
     // eslint-disable-next-line max-len
@@ -56,7 +48,6 @@ if (token === '') {
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
 export default function HomeScreen() {
-  const [PedometerAvailability, SetPedometerAvailability] = useState('');
   const maxSteps = 12000;
   const [stepCount, setStepCount] = useState(0);
 
@@ -89,17 +80,6 @@ export default function HomeScreen() {
     const calculed = Pedometer.watchStepCount((result) => {
       setStepCount(result.steps);
     });
-    Pedometer.isAvailableAsync().then(
-
-      (result) => {
-        SetPedometerAvailability(String(result));
-      },
-
-      (error) => {
-        SetPedometerAvailability(error);
-      },
-
-    );
   };
 
   return (

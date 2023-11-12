@@ -165,7 +165,6 @@ export async function createLeague(
         description,
       },
     });
-    console.log(response.data);
     return { error: false };
   } catch (error) {
     return { error: true };
