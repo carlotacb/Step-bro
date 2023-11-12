@@ -22,6 +22,7 @@ const routes = require('./routes');
 
 app.use('/api', routes);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs));
+app.use('/uploads', express.static('uploads'));
 app.get('/*', (req, res) => res.redirect('/api-docs'));
 
 

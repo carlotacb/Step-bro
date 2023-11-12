@@ -42,6 +42,7 @@ const UserController = () => {
       return res.status(500).json({success:false, message:'Internal Server Error'});
     }
   };
+  
 
   const getUserByEmail = async (req, res) => {
     const userEmail = req.params.email;
