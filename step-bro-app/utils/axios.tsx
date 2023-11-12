@@ -103,10 +103,9 @@ export async function getMyLeagues(token: string): Promise<MyLeagueResponse> {
       url: `${baseURL}/myLeagues`,
       headers: { token },
     });
-    console.log(response.data);
-    return { list: { ...response.data.leagues }, error: false };
+
+    return { list: [...response.data.leagues], error: false };
   } catch (error) {
-    console.log(error);
     return { error: true };
   }
 }

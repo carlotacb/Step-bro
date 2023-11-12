@@ -1,21 +1,22 @@
-import { router } from 'expo-router';
-import { getMyLeagues, getUserInformation } from '../utils/axios';
-import { getToken } from '../utils/utils';
+import { useEffect } from 'react';
+import { Linking, Text } from 'react-native';
 
-const token = getToken();
-if (token === '') {
-  router.replace('/login');
-} else {
-  /* getMyLeagues(token).then((response) => {
-    initialUsername = response.information?.username || '';
-    email = response.information?.user_mail || '';
-    phoneNumber = response.information?.phone_number || '';
-    initialBio = response.information?.bio || '';
-    loadingScreen = false;
-  }); */
-}
 export default function LeagueInfo() {
+  useEffect(() => {
+    const getUrlAsync = async () => {
+      const initialUrl = await Linking.getInitialURL();
+      if (initialUrl) {
+        // Convert the string into a URL object
+        const url = new URL(initialUrl);
+        // Get the value of the "param" query parameter
+        const param = url.searchParams.get('league_id');
+        // Display the parameter value in the console
+        console.log('Parameter:', param);
+      }
+    };
+    getUrlAsync();
+  }, []);
   return (
-    <View />
+    <Text> Hola </Text>
   );
 }

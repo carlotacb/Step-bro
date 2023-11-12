@@ -8,6 +8,7 @@ import {
   View,
   ImageBackground,
   Dimensions,
+  LogBox,
 } from 'react-native';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -26,10 +27,10 @@ import { getToken } from '../../utils/utils';
 import { getUserInformation, getUserStats, sendSteps } from '../../utils/axios';
 // eslint-disable-next-line import/no-extraneous-dependencies
 const data = {
-  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  labels: ['08-11', '09-11', '10-11', '11-11', '12-11', '', ''],
   datasets: [
     {
-      data: [200, 450, 280, 800, 990, 430, 800],
+      data: [12300, 900, 200, 34000, 8000, 0, 0],
     },
   ],
 };
@@ -52,9 +53,11 @@ if (token === '') {
   });
 }
 
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();
 export default function HomeScreen() {
   const [PedometerAvailability, SetPedometerAvailability] = useState('');
-  const maxSteps = 80;
+  const maxSteps = 12000;
   const [stepCount, setStepCount] = useState(0);
 
   const chartConfig = {

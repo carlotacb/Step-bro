@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, TextInput as Input } from 'react-native-paper';
 import { Link, router } from 'expo-router';
+import { useState } from 'react';
 import { Text, View } from '../../components/Themed';
 import { getMyLeagues } from '../../utils/axios';
 import { getToken } from '../../utils/utils';
@@ -35,6 +36,8 @@ if (token === '') {
 }
 
 export default function MyLeaguesScreen() {
+  const [invitationPhone, setInvitationPhone] = useState('');
+
   return (
     <View style={styles.container}>
       {loadingScreen ? <Text>Loading...</Text>
@@ -48,7 +51,7 @@ export default function MyLeaguesScreen() {
                   onPress={() => null}
                   buttonColor="#79AF6C"
                   textColor="#FFFFFF"
-                  style={{ width: '30%', marginTop: 20, marginBottom: 20 }}
+                  style={{ width: '50%', marginTop: 20, marginBottom: 20 }}
                 >
                   Create new league
                 </Button>
@@ -58,18 +61,62 @@ export default function MyLeaguesScreen() {
               : (
                 <>
                   {list.map((league) => (
-                    <View key={league.league_name} style={styles.leagueContainer}>
-                      <Link href="/league_info" asChild>
+                    <View style={styles.leagueContainer} key={league.league_id}>
+                      <Text style={{ textTransform: 'uppercase', fontSize: 20, fontWeight: 'bold' }}>{league.league_name}</Text>
+                      <Text style={{ fontSize: 13, marginTop: 5, fontStyle: 'italic' }}>
+                        From
+                        {' '}
+                        {league.start_date.toString()}
+                        {' '}
+                        to
+                        {' '}
+                        {league.end_date.toString()}
+                      </Text>
+                      <Text style={{ fontSize: 13, marginTop: 5, fontStyle: 'italic' }}>
+                        Created by:
+                        {' '}
+                        {league.creator_mail}
+                        {' '}
+                        with
+                        {' '}
+                        {league.members}
+                        {' '}
+                        members
+                      </Text>
+
+                      <View style={{
+                        flexDirection: 'row',
+                        gap: 10,
+                        marginTop: 10,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}
+                      >
+                        <Input
+                          selectionColor="#79AF6C"
+                          underlineColor="transparent"
+                          mode="outlined"
+                          label="Phone number"
+                          enterKeyHint="next"
+                          value={invitationPhone}
+                          onChangeText={(text) => setInvitationPhone(text)}
+                          autoCapitalize="none"
+                          textContentType="telephoneNumber"
+                          inputMode="tel"
+                          style={{ height: 'auto', width: '50%' }}
+                        />
                         <Button
-                          mode="text"
-                          onPress={() => null}
-                          buttonColor="#6c95af"
+                          mode="elevated"
+                          onPress={() => console.log('invite')}
+                          buttonColor="#79AF6C"
                           textColor="#FFFFFF"
-                          style={{ width: '80%', marginTop: 10, marginBottom: 10 }}
+                          style={{ width: '40%' }}
                         >
-                          {league.league_name}
+                          Inivite
                         </Button>
-                      </Link>
+                      </View>
+
                     </View>
                   ))}
                 </>
@@ -84,7 +131,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     alignItems: 'center',
-    padding: 50,
+    padding: 20,
   },
   title: {
     fontSize: 25,
@@ -92,12 +139,23 @@ const styles = StyleSheet.create({
   },
   leagueContainer: {
     display: 'flex',
-    alignItems: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 40,
+    paddingRight: 40,
     justifyContent: 'center',
     width: '100%',
-    height: 70,
     marginTop: 20,
-    backgroundColor: '#6c95af',
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderColor: '#6C95AF',
+    borderWidth: 2,
     borderRadius: 10,
+  },
+  leagueChip: {
+    width: '80%',
+    marginTop: 10,
+    marginBottom: 10,
+    textTransform: 'uppercase',
   },
 });

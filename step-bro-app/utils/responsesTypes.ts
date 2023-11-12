@@ -56,4 +56,9 @@ export interface MyLeagueResponse {
 export interface LeaguesList {
   readonly league_id: number;
   readonly league_name: string;
+  readonly creator_mail: string;
+  readonly description: string;
+  readonly start_date: Date;
+  readonly end_date: Date;
+  readonly members: string;
 }
