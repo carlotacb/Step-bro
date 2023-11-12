@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet } from 'react-native';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Button, TextInput as Input } from 'react-native-paper';
 import { Link, router } from 'expo-router';
 import { useState } from 'react';

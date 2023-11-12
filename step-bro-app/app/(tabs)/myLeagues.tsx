@@ -75,13 +75,22 @@ export default function MyLeaguesScreen() {
                 </Button>
               </Link>
             </View>
-            {emptyList
-              ? <Text>You don't have any leagues yet</Text>
+            {emptyList ? <Text>You don't have any leagues yet</Text>
               : (
                 <>
                   {list.map((league) => (
                     <View key={league.league_name} style={styles.leagueContainer}>
-                      <Text>{league.league_name}</Text>
+                      <Link href="/league_info" asChild>
+                        <Button
+                          mode="text"
+                          onPress={() => null}
+                          buttonColor="#6c95af"
+                          textColor="#FFFFFF"
+                          style={{ width: '80%', marginTop: 10, marginBottom: 10 }}
+                        >
+                          {league.league_name}
+                        </Button>
+                      </Link>
                     </View>
                   ))}
                 </>
