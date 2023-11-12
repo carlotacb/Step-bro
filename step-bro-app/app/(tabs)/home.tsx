@@ -33,42 +33,47 @@ const data = {
     },
   ],
 };
+
+const token = getToken();
+let username = '';
+console.log(token);
+if (token === '') {
+  // router.replace('/login');
+} else {
+  console.log('test');
+  getUserStats(token).then((response) => {
+    console.log(response);
+
+    // eslint-disable-next-line max-len
+    data.datasets = [{ data: [response.stats?.[0]?.steps ?? 0, response.stats?.[1]?.steps ?? 0, response.stats?.[2]?.steps ?? 0, response.stats?.[3]?.steps ?? 0, response.stats?.[4]?.steps ?? 0, response.stats?.[5]?.steps ?? 0, response.stats?.[6]?.steps ?? 0] }];
+
+    // eslint-disable-next-line max-len
+    data.labels = [response.stats?.[0]?.stats_day?.toString() ?? '', response.stats?.[1]?.stats_day?.toString() ?? '', response.stats?.[2]?.stats_day?.toString() ?? '', response.stats?.[3]?.stats_day?.toString() ?? '', response.stats?.[4]?.stats_day?.toString() ?? '', response.stats?.[5]?.stats_day?.toString() ?? '', response.stats?.[6]?.stats_day?.toString() ?? ''];
+  });
+
+  getUserInformation(token).then((response) => {
+    console.log(response);
+    username = response.information?.username || '';
+  });
+}
+
 export default function HomeScreen() {
   const [PedometerAvailability, SetPedometerAvailability] = useState('');
   const maxSteps = 80;
   const [stepCount, setStepCount] = useState(0);
 
   const chartConfig = {
-    backgroundOpacity: 0,
+    backgroundGradientFrom: '#1E2923',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#08130D',
+    backgroundGradientToOpacity: 0.5,
     color: (opacity = 1) => `rgba(255, 0, 58, ${opacity})`,
     strokeWidth: 2, // optional, default 3
     barPercentage: 0.8,
     useShadowColorFromDataset: false, // optional
+    decimalPlaces: 0,
   };
   const screenWidth = Dimensions.get('window').width;
-
-  const token = getToken();
-  let username = '';
-  console.log(token);
-  if (token === '') {
-    //router.replace('/login');
-  } else {
-    console.log('test');
-    getUserStats(token).then((response) => {
-      console.log(response);
-
-      // eslint-disable-next-line max-len
-      data.datasets = [{ data: [response.stats?.[0]?.steps ?? 0, response.stats?.[1]?.steps ?? 0, response.stats?.[2]?.steps ?? 0, response.stats?.[3]?.steps ?? 0, response.stats?.[4]?.steps ?? 0, response.stats?.[5]?.steps ?? 0, response.stats?.[6]?.steps ?? 0] }];
-
-      // eslint-disable-next-line max-len
-      data.labels = [response.stats?.[0]?.stats_day?.toString() ?? '', response.stats?.[1]?.stats_day?.toString() ?? '', response.stats?.[2]?.stats_day?.toString() ?? '', response.stats?.[3]?.stats_day?.toString() ?? '', response.stats?.[4]?.stats_day?.toString() ?? '', response.stats?.[5]?.stats_day?.toString() ?? '', response.stats?.[6]?.stats_day?.toString() ?? ''];
-    });
-
-    getUserInformation(token).then((response) => {
-      console.log(response);
-      username = response.information?.username || '';
-    });
-  }
 
   const ref = useRef<number|null>(null);
 
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
   graphStyle: {
     flex: 1,
     justifyContent: 'center',
-    //paddingTop: '15%',
+    marginTop: '25%',
   },
   title: {
     fontSize: 20,
