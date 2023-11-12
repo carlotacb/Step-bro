@@ -137,9 +137,12 @@ const UserController = () => {
     try {
       const email = req.get('token');
       const result = await db.query('SELECT * FROM leagues l INNER JOIN usersleagues ul ON l.league_id = ul.league_id WHERE ul.user_mail = $1;', [email]);
-      
+
       // Edit the resulting rows so that the date is YYYY-MM-DD instead of timestamp
       for (let i = 0; i < result.rows.length; i++) {
+        let league_id = result.rows[i].league_id
+        let members = await db.query('SELECT COUNT(*) FROM usersleagues WHERE league_id = $1', [league_id])
+        result.rows[i].members = members.rows[0].count;
         const start_date = result.rows[i].start_date;
         result.rows[i].start_date = start_date.toISOString().split('T')[0];
         const end_date = result.rows[i].end_date;
